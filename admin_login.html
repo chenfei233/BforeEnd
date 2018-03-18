@@ -181,7 +181,7 @@
             }
 
             if(rl_name.length>0 && el_pwdo.length>0 && el_pwdt.length>0){
-                // 成功传值
+                // 输入没问题则进入ajax传值
             }else{
                 layui.use('layer', function(){
                     var layer = layui.layer;
@@ -193,7 +193,7 @@
             }
         });
 
-        $("#el_pwdo").on('input propertychange',function () {
+        $("#el_pwdo").on('input propertychange',function () {// 校验密码位数
             var el_pwdo = $("#el_pwdo").val();
             if(el_pwdo.length<9){
                 $("#prompto").html("<b style='color: red'>密码不少于9位！</b>");

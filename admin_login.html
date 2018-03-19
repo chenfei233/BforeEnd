@@ -8,7 +8,7 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="layui/layui.js"></script>
 </head>
-<body onload='createCode()'>
+<body  >
 <div class="admin">
     <div class="layui-main">
         <div class="admin_entry" id="admin_entry">   <!-- 登录 -->
@@ -34,8 +34,7 @@
                     <div id="code_no">
                         <img src="images/no.png" alt="" height="45px" width="45px"/>
                     </div>
-                    <input type="button" id="code" onclick="createCode()" title='点击更换验证码' value="">
-                    <!--<button id="code" title='点击更换验证码'>登录</button>-->
+                    <input type="button" id="code" title='点击更换验证码' value="">
                 </div>
                 <div class="layui-form-item">
                     <button id="entry" class="layui-btn">登录</button>
@@ -187,123 +186,98 @@
     }
 </style>
 <script type="text/javascript">
-    var code ; //在全局定义验证码
-    function createCode(){
-        code = "";
-        var codeLength = 4;//验证码的长度
-        // $("#code").text("");
-        var checkCode = document.getElementById("code");
-        checkCode.value = "";//把code值赋给验证码
-        var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
-            'S','T','U','V','W','X','Y','Z');//随机数
-        for(var i = 0; i < codeLength; i++) {//循环操作
-            var index = Math.floor(Math.random()*36);//取得随机数的索引（0~35）
-            code += random[index];//根据索引取得随机数加到code上
-        }
-        checkCode.value = code;//把code值赋给验证码
-        // $("#code").text(code);
-    }
-    // $("#code").click(function(){// 注册按钮
-    //     alert("");
-    //     code = "";
-    //     var codeLength = 4;//验证码的长度
-    //     // $("#code").val("");
-    //     var checkCode = document.getElementById("code");
-    //     checkCode.value = "";//把code值赋给验证码
-    //     var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
-    //         'S','T','U','V','W','X','Y','Z');//随机数
-    //     for(var i = 0; i < codeLength; i++) {//循环操作
-    //         var index = Math.floor(Math.random()*36);//取得随机数的索引（0~35）
-    //         code += random[index];//根据索引取得随机数加到code上
-    //     }
-    //     checkCode.value = code;//把code值赋给验证码
-    //     // $("#code").val("111");
-    // }
-    $("#ey_code").on('input propertychange',function () {// 校验密码位数
-        var ey_code = $("#ey_code").val().toUpperCase();
-        if(ey_code != code){
-            $("#code_ok").hide();//隐藏OKdiv
-            $("#code_no").show();//显示NOdiv
-        }else{
-            $("#code_ok").show();//显示OKdiv
-            $("#code_no").hide();//隐藏NOdiv
-        }
-    });
-    // function validate(){// 校验验证码
-    //     var inputCode = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写
-    //     if(inputCode.length <= 0) { //若输入的验证码长度为0
-    //         alert("请输入验证码！"); //则弹出请输入验证码
-    //     }else if(inputCode != code ) { //若输入的验证码与产生的验证码不一致时
-    //         alert("验证码输入错误！@_@"); //则弹出验证码输入错误
-    //         createCode();//刷新验证码
-    //         document.getElementById("input").value = "";//清空文本框
-    //     }else { //输入正确时
-    //         alert("合格！^-^");
-    //     }
-    // }
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
+    $('#code').trigger("click");
+    $(document).ready(function () {
 
         $("#admin_enroll").hide();//隐藏注册div
         $("#code_ok").hide();//隐藏OKdiv
         $("#code_no").hide();//隐藏NOdiv
+        // $('#code').trigger("click");
 
-        $("#entry").click(function() {// 登录按钮（校验账号密码输入是否为空）
+        var code=""; //在全局定义验证码
+        var codeLength = 4;//验证码的长度
+        $("#code").click(function (){// 刷新验证码
+            code="";
+            $("#code").attr({
+                "value": ""
+            });
+            var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//随机数
+            for (var i = 0; i < codeLength; i++) {//循环操作
+                var index = Math.floor(Math.random() * 36);//取得随机数的索引（0~35）
+                code += random[index];//根据索引取得随机数加到code上
+            }
+            $("#code").attr({
+                "value": code
+            });
+        });
+
+        $("#ey_code").on('input propertychange', function () {// 校验密码位数
+            var ey_code = $("#ey_code").val().toUpperCase();
+            if (ey_code != code) {
+                $("#code_ok").hide();//隐藏OKdiv
+                $("#code_no").show();//显示NOdiv
+            } else {
+                $("#code_ok").show();//显示OKdiv
+                $("#code_no").hide();//隐藏NOdiv
+            }
+        });
+
+        $("#entry").click(function () {// 登录按钮（校验账号密码输入是否为空）
             var ey_name = $("#ey_name").val();
             var ey_pswd = $("#ey_pswd").val();
-            if (ey_name.length>0 && ey_pswd.length>0) {
+            if (ey_name.length > 0 && ey_pswd.length > 0) {
                 // $("#prompt").html("<b style='color: red'>两次密码输入不一致！</b>");
-            }else{
-                layui.use('layer', function(){
+            } else {
+                layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.open({
                         title: '警告'
-                        ,content: '账号或密码不能为空！'
+                        , content: '账号或密码不能为空！'
                     });
                 });
             }
         });
 
-        $("#enroll").click(function() {// 注册按钮
+        $("#enroll").click(function () {// 注册按钮
             var rl_name = $("#rl_name").val();
             var el_pwdo = $("#el_pwdo").val();
             var el_pwdt = $("#el_pwdt").val();
 
             if (el_pwdo != el_pwdt) {//（校验两次密码输入一致）
                 $("#promptt").html("<b style='color: red'>两次密码输入不一致！</b>");
-            }else{
+            } else {
                 $("#promptt").html("");
             }
 
-            if(rl_name.length>0 && el_pwdo.length>0 && el_pwdt.length>0){
+            if (rl_name.length > 0 && el_pwdo.length > 0 && el_pwdt.length > 0) {
                 // 输入没问题则进入ajax传值
-            }else{
-                layui.use('layer', function(){
+            } else {
+                layui.use('layer', function () {
                     var layer = layui.layer;
                     layer.open({
                         title: '警告'
-                        ,content: '账号或密码不能为空！'
+                        , content: '账号或密码不能为空！'
                     });
                 });
             }
         });
 
-        $("#el_pwdo").on('input propertychange',function () {// 校验密码位数
+        $("#el_pwdo").on('input propertychange', function () {// 校验密码位数
             var el_pwdo = $("#el_pwdo").val();
-            if(el_pwdo.length<9){
+            if (el_pwdo.length < 9) {
                 $("#prompto").html("<b style='color: red'>密码不少于9位！</b>");
-            }else{
+            } else {
                 $("#prompto").html("");
             }
         });
 
-        $("#showEnroll").click(function(){// 去注册？按钮（显示注册div   隐藏登录div）
+        $("#showEnroll").click(function () {// 去注册？按钮（显示注册div   隐藏登录div）
             $("#admin_entry").hide();
             $("#admin_enroll").show();
         });
 
-        $("#showEntry").click(function(){//  去登录？按钮（显示登录div   隐藏注册div）
+        $("#showEntry").click(function () {//  去登录？按钮（显示登录div   隐藏注册div）
             $("#admin_entry").show();
             $("#admin_enroll").hide();
         });

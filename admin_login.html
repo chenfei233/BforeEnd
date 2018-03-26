@@ -187,47 +187,53 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
+
+
+        $("#admin_enroll").hide();// 隐藏注册div
+        $("#code_ok").hide();// 隐藏OKdiv
+        $("#code_no").hide();// 隐藏NOdiv
+
+        var code=""; // 在全局定义验证码
+        var flag=false;// 输入验证码是否正确标志
+
         createCode();// 第一次运行显示验证码
-
-        $("#admin_enroll").hide();//隐藏注册div
-        $("#code_ok").hide();//隐藏OKdiv
-        $("#code_no").hide();//隐藏NOdiv
-
-        var code=""; //在全局定义验证码
-        var flag=false;
 
         function createCode() {
             code="";
-            var codeLength = 4;//验证码的长度
+            var codeLength = 4;// 验证码的长度
             $("#code").attr({
                 "value": ""
             });
             var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//随机数
-            for (var i = 0; i < codeLength; i++) {//循环操作
-                var index = Math.floor(Math.random() * 36);//取得随机数的索引（0~35）
-                code += random[index];//根据索引取得随机数加到code上
+                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');// 随机数
+            for (var i = 0; i < codeLength; i++) {// 循环操作
+                var index = Math.floor(Math.random() * 36);// 取得随机数的索引（0~35）
+                code += random[index];// 根据索引取得随机数加到code上
             }
             $("#code").attr({
                 "value": code
             });
         }
 
-        $("#code").click(function (){// 刷新验证码
-            createCode();
-        });
-
-        $("#ey_code").on('input propertychange', function () {// 校验密码位数
+        $("#ey_code").on('input propertychange', function () {// 校验密码位数 以及 正确性
             var ey_code = $("#ey_code").val().toUpperCase();
             if (ey_code != code && ey_code.length>3) {
                 flag=false;
-                $("#code_ok").hide();//隐藏OKdiv
-                $("#code_no").show();//显示NOdiv
+                $("#code_ok").hide();// 隐藏OKdiv
+                $("#code_no").show();// 显示NOdiv
             } else if (ey_code == code && ey_code.length>3){
                 flag=true;
-                $("#code_ok").show();//显示OKdiv
-                $("#code_no").hide();//隐藏NOdiv
+                $("#code_ok").show();// 显示OKdiv
+                $("#code_no").hide();// 隐藏NOdiv
+            } else {
+                flag=false;
+                $("#code_ok").hide();// 隐藏OKdiv
+                $("#code_no").hide();// 隐藏NOdiv
             }
+        });
+
+        $("#code").click(function (){// 点击刷新验证码
+            createCode();
         });
 
         $("#entry").click(function () {// 登录按钮（校验账号密码输入是否为空）
@@ -237,6 +243,7 @@
                 // $("#prompt").html("<b style='color: red'>两次密码输入不一致！</b>");
             } else if(!flag){
                 layui.use('layer', function () {
+                    createCode();
                     var layer = layui.layer;
                     layer.open({
                         title: '警告'

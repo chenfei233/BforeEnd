@@ -194,12 +194,21 @@
         $("#code_no").hide();// 隐藏NOdiv
 
         var code=""; // 在全局定义验证码
-        var flag=false;// 输入验证码是否正确标志
+        var flag=false; // 输入验证码是否正确标志
+        var layer; // layer全局定义
+
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
 
         createCode();// 第一次运行显示验证码
 
         function createCode() {
             code="";
+
+            $("#code_ok").hide();// 隐藏OKdiv
+            $("#code_no").hide();// 隐藏NOdiv
+
             var codeLength = 4;// 验证码的长度
             $("#code").attr({
                 "value": ""
@@ -215,7 +224,7 @@
             });
         }
 
-        $("#ey_code").on('input propertychange', function () {// 校验密码位数 以及 正确性
+        $("#ey_code").on('input propertychange', function () {// 校验验证码正确性
             var ey_code = $("#ey_code").val().toUpperCase();
             if (ey_code != code && ey_code.length>3) {
                 flag=false;
@@ -240,23 +249,43 @@
             var ey_name = $("#ey_name").val();// 获取用户名
             var ey_pswd = $("#ey_pswd").val();// 获取密码
             if (ey_name.length > 0 && ey_pswd.length > 0 && flag) {
-                // $("#prompt").html("<b style='color: red'>两次密码输入不一致！</b>");
-            } else if(!flag){
-                layui.use('layer', function () {
-                    createCode();
-                    var layer = layui.layer;
-                    layer.open({
-                        title: '警告'
-                        , content: '验证码不正确！'
-                    });
+                $.ajax({
+                    url:"http://localhost:8080/Bibased/adminLogin", //处理登录页面的路径
+                    data:{
+                        admnum:ey_name,
+                        admpwd:ey_pswd
+                    },//要提交的数据是一个JSON
+                    type:"GET", //提交方式
+                    dataType:"TEXT", //返回数据的类型
+                    //TEXT字符串 JSON返回JSON XML返回XML
+                    success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                        if(data){
+                            layer.open({
+                                title: '提醒',
+                                content: '登陆成功！'
+                            });
+                        }else{
+                            layer.open({
+                                title: '警告',
+                                content: '账号或密码错误！'
+                            });
+                            createCode(); // 刷新一次验证码
+                        }
+                    },
+                    error:function (data) {
+                        alert("出错了!");
+                    }
                 });
-            } else {
-                layui.use('layer', function () {
-                    var layer = layui.layer;
-                    layer.open({
-                        title: '警告'
-                        , content: '账号或密码不能为空！'
-                    });
+            }else if(ey_name.length == 0 || ey_pswd.length == 0){
+                layer.open({
+                    title: '警告',
+                    content: '账号或密码不能为空！'
+                });
+            } else if(!flag){
+                createCode();
+                layer.open({
+                    title: '警告',
+                    content: '验证码不正确！'
                 });
             }
         });
@@ -275,13 +304,33 @@
 
             if (rl_name.length > 0 && el_pwdo.length > 0 && el_pwdt.length > 0) {
                 // 输入没问题则进入ajax传值
+                $.ajax({
+                    url:"http://localhost:8080/Bibased/adminRegister", //处理注册页面的路径
+                    data:{
+                        admnum:rl_name,
+                        admpwd:el_pwdo
+                    },//要提交的数据是一个JSON
+                    type:"POST", //提交方式
+                    dataType:"TEXT", //返回数据的类型
+                    //TEXT字符串 JSON返回JSON XML返回XML
+                    success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                        if(data){
+                            layer.open({
+                                title: '提示',
+                                content: '注册成功!<br>正在跳转进入登录页面'
+                            });
+                        }else{
+                            layer.open({
+                                title: '提示',
+                                content: '该账号已存在！'
+                            });
+                        }
+                    }
+                });
             } else {
-                layui.use('layer', function () {
-                    var layer = layui.layer;
-                    layer.open({
-                        title: '警告'
-                        , content: '账号或密码不能为空！'
-                    });
+                layer.open({
+                    title: '警告',
+                    content: '账号或密码不能为空！'
                 });
             }
         });

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员首页</title>
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+    <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+<div class="layui-form-item">
+    <button id="testone" class="layui-btn">测试</button>
+</div>
+<body>
+</body>
+<script>
+    $("#entry").click(function () {// 登录按钮（校验账号密码输入是否为空）
+        $.ajax({
+            url:"http://localhost:8080/Bibased/email", //处理登录页面的路径
+            data:{},//要提交的数据是一个JSON
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                if(data){
+                    layer.open({
+                        title: '提醒',
+                        content: '登陆成功！'
+                    });
+                }else{
+                    layer.open({
+                        title: '警告',
+                        content: '账号或密码错误！'
+                    });
+                }
+            },
+            error:function (data) {
+                alert("出错了!");
+            }
+        });
+    });
+</script>
+</html>

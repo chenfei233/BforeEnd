@@ -56,6 +56,7 @@
                     <div class="layui-input-inline">
                         <input id="rl_name" type="text" name="title" placeholder="请输入用户名" class="layui-input">
                     </div>
+                    <div id="promptn" class="layui-form-mid layui-word-aux"></div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
@@ -178,7 +179,7 @@
         padding: 20px;
         position: inherit;
     }
-    #prompto,#promptt{
+    #promptn,#prompto,#promptt{
         width: 150px;
         height: 25px;
         position: absolute;
@@ -188,21 +189,28 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-
         $("#admin_enroll").hide();// 隐藏注册div
         $("#code_ok").hide();// 隐藏OKdiv
         $("#code_no").hide();// 隐藏NOdiv
 
+        var layer; // layer全局定义
         var code=""; // 在全局定义验证码
         var flag=false; // 输入验证码是否正确标志
-        var layer; // layer全局定义
+        var strfo=false; // 输入用户名是否含有特殊字符标志   含有为true
+        var strft=false; // 输入用户名长度是否超出标志   超出为true
 
+        /**
+         *  layer全局化定义
+         * */
         layui.use('layer', function () {
             layer = layui.layer;
         });
 
-        createCode();// 第一次运行显示验证码
+        createCode(); // 第一次运行显示验证码
 
+        /**
+         *  验证码函数
+         * */
         function createCode() {
             code="";
 
@@ -224,8 +232,11 @@
             });
         }
 
-        $("#ey_code").on('input propertychange', function () {// 校验验证码正确性
-            var ey_code = $("#ey_code").val().toUpperCase();
+        /**
+         *  校验验证码正确性
+         * */
+        $("#ey_code").on('input propertychange', function () {
+            var ey_code = $("#ey_code").val().toUpperCase(); // 转换为大写
             if (ey_code != code && ey_code.length>3) {
                 flag=false;
                 $("#code_ok").hide();// 隐藏OKdiv
@@ -241,11 +252,17 @@
             }
         });
 
-        $("#code").click(function (){// 点击刷新验证码
+        /**
+         *  点击刷新验证码
+         * */
+        $("#code").click(function (){
             createCode();
         });
 
-        $("#entry").click(function () {// 登录按钮（校验账号密码输入是否为空）
+        /**
+         *  登录按钮 （校验账号密码输入是否为空）
+         * */
+        $("#entry").click(function () {
             var ey_name = $("#ey_name").val();// 获取用户名
             var ey_pswd = $("#ey_pswd").val();// 获取密码
             if (ey_name.length > 0 && ey_pswd.length > 0 && flag) {
@@ -290,7 +307,10 @@
             }
         });
 
-        $("#enroll").click(function () {// 注册按钮
+        /**
+         *  注册按钮
+         * */
+        $("#enroll").click(function () {
             var rl_name = $("#rl_name").val();// 获取用户名
             var el_pwdo = $("#el_pwdo").val();// 第一次密码
             var el_pwdt = $("#el_pwdt").val();// 第二次密码
@@ -302,7 +322,7 @@
                 $("#promptt").html("");
             }
 
-            if (rl_name.length > 0 && el_pwdo.length > 0 && el_pwdt.length > 0) {
+            if (rl_name.length > 0 && el_pwdo.length > 0 && el_pwdt.length > 0 && !strfo && !strft) {
                 // 输入没问题则进入ajax传值
                 $.ajax({
                     url:"http://localhost:8080/Bibased/adminRegister", //处理注册页面的路径
@@ -330,12 +350,15 @@
             } else {
                 layer.open({
                     title: '警告',
-                    content: '账号或密码不能为空！'
+                    content: '输入内容非法！'
                 });
             }
         });
 
-        $("#el_pwdo").on('input propertychange', function () {// 校验密码位数
+        /**
+         *  校验密码位数
+         * */
+        $("#el_pwdo").on('input propertychange', function () {
             var el_pwdo = $("#el_pwdo").val();
             if (el_pwdo.length < 9) {
                 $("#prompto").html("<b style='color: red'>密码不少于9位！</b>");
@@ -344,12 +367,67 @@
             }
         });
 
-        $("#showEnroll").click(function () {// 去注册？按钮（显示注册div   隐藏登录div）
+        /**
+         *  注册输入校验
+         * */
+        $("#rl_name").on('input propertychange', function () {
+            var rl_name = $("#rl_name").val();
+            strFilter(rl_name);
+            if(!strfo)
+                strLength(rl_name);
+        });
+
+        /**
+         *  特殊字符
+         * */
+        function strFilter(str) {
+            var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+                regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+            if(regEn.test(str) || regCn.test(str)) {
+                $("#promptn").html("<b style='color: red'>不能包含特殊字符！</b>");
+                strfo=true;
+            }else{
+                $("#promptn").html("");
+                strfo=false;
+            }
+        }
+
+        /**
+         *  字符串长度校验
+         * */
+        function strLength(str) {
+            var len = 0;
+            for (var i=0; i<str.length; i++) {
+                var c = str.charCodeAt(i);
+                //单字节加1
+                if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
+                    len++;
+                }
+                else {
+                    len+=2;
+                }
+            }
+            if(len > 22){
+                $("#promptn").html("<b style='color: red'>不能超过11个汉字或22个字符！</b>");
+                strft=true;
+            }else{
+                $("#promptn").html("");
+                strft=false;
+            }
+        }
+        
+        /**
+         *  去注册？按钮（显示注册div   隐藏登录div）
+         */
+        $("#showEnroll").click(function () {
             $("#admin_entry").hide();
             $("#admin_enroll").show();
         });
 
-        $("#showEntry").click(function () {//  去登录？按钮（显示登录div   隐藏注册div）
+        /**
+         *  去登录？按钮（显示登录div   隐藏注册div）
+         */
+        $("#showEntry").click(function () {
             $("#admin_entry").show();
             $("#admin_enroll").hide();
         });

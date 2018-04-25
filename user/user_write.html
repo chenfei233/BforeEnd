@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>写文章 - 每日一报</title>
+    <link rel="icon" type="image/x-icon" href="../images/earth.png"/>
+    <script type="text/javascript" src="../js/wangEditor.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../layui/layui.js"></script>
+</head>
+<body>
+<div class="write_top">
+    <div class="write_top_left">
+        <img class="left_img" src="../images/r_black.png" alt="" width="56" height="56">
+        <span class="left_txt">创作中心</span>
+    </div>
+    <div class="write_top_right">
+        <img class="right_img" src="../images/test.jpg" alt="" width="56" height="56">
+        <span class="user_name">特使的同户名安卡</span>
+        <span class="user_logout">退出</span>
+    </div>
+</div>
+<div class="write_shadow"></div>
+<div class="write_bottom">
+    <select id="selType">
+        <option value="0">请选择</option>
+        <option value="1">原创</option>
+        <option value="2">转载</option>
+        <option value="3">翻译</option>
+        <option value="4">球球</option>
+    </select>
+    <div class="write_title">
+        <input type="text" id="txtTitle" maxlength="100" placeholder="输入文章标题">
+    </div>
+    <div class="write_btn">
+        <button class="btn_fabu" id="btn_fabu">发布文章</button>
+    </div>
+    <div class="write_content">
+        <div id="div1" class="toolbar"></div>
+        <div id="div2" class="text" min-height> <!--可使用 min-height 实现编辑区域自动增加高度-->
+            <p>请输入内容</p>
+        </div>
+    </div>
+</div>
+<div class="write_last">
+    <div class="write_ok"></div>
+</div>
+</body>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+
+    .write_top{
+        height: 72px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+    .write_top_left{
+        height: 72px;
+        margin-left: 44px;
+        line-height: 72px;
+        font-size: 18px;
+        color: #888;
+        float: left;
+    }
+    .left_txt{
+        width: 80px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+    }
+    .write_top_right{
+        float: right;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        margin-right: 48px;
+        display: flex;
+    }
+    .left_img,.right_img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+    }
+    .user_name{
+        width: 80px;
+        height: 20px;
+        margin: 18px 10px;
+        line-height: 20px;
+        font-size: 16px;
+        overflow: hidden;
+    }
+    .user_logout{
+        height: 20px;
+        margin: 18px 2px;
+        padding-left: 8px;
+        line-height: 20px;
+        font-size: 16px;
+        color: #78909c;
+        border-left: 1px solid #e4e4e4;
+    }
+
+    .write_shadow{
+        padding-top: 4px;
+        position: relative;
+        margin: 0 auto;
+        background-color: #fff;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
+        box-sizing: border-box;
+    }
+
+    .write_bottom{
+        padding-top: 4px;
+    }
+    #selType {
+        width: 160px;
+        height: 40px;
+        padding: 8px 0 8px 16px;
+        margin: 5px 10px 5px 40px;
+        background-color: #f4f4f4;
+        border: none;
+        font-size: 16px;
+        color: #4f4f4f;
+        float: left;
+    }
+    .write_title{
+        margin: 5px 212px 5px 212px;
+    }
+    #txtTitle {
+        /*display: block;*/
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        padding: 0 16px;
+        border: none;
+        background-color: #f4f4f4;
+        font-size: 16px;
+        color: #4f4f4f;
+        float: left;
+    }
+    .write_btn{
+        width: 212px;
+        float: right;
+    }
+    .btn_fabu {
+        width: 132px;
+        margin: 0px 40px;
+        background: #c92027;
+        padding: 8px 16px;
+        font-size: 16px;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+    }
+    .write_content{
+        width: 1010px;
+        margin: 50px auto 0px auto;
+    }
+    #div2{
+        height: 480px;
+    }
+
+    .write_last {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(79,79,79,0.9);
+        z-index: 99999;
+    }
+    .write_ok{
+        width: 500px;
+        height: 300px;
+        background-color: white;
+        margin: 150px auto;
+    }
+</style>
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
+    editor.create();
+    // editor.txt.html('<p>用 JS 设置的内容</p>');
+    // editor.txt.append('<p>追加的内容</p>');
+    // editor.txt.clear();//  清空内容
+    // alert(editor.txt.html());// 获取html
+    // alert(editor.txt.text());// 获取text
+
+    $("#btn_fabu").click(function (){
+        // $(".write_last").css("display","block");
+        var options=$("#selType option:selected"); //获取选中的项
+        var txtTitle = $("#txtTitle").val();// 获取文章标题
+        var txtHtml = editor.txt.html();// 获取密码
+        var txtCate = options.val();//获取类别id
+        console.log("不挑剔  ："+txtTitle);
+        console.log("内容啊  ："+txtHtml);
+        console.log("类别啊  ："+txtCate);
+    });
+</script>
+</html>

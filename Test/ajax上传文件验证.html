@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传示例</title>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<h2>ajax文件上传示例</h2>
+<hr/>
+选择文件:<input type="file" id="file1" /><br />
+<input type="button" id="upload" value="上传" />
+</body>
+<script>
+    $("#upload").click(function () {
+        // $("#imgWait").show();
+        var formData = new FormData();
+        formData.append("file", document.getElementById("file1").files[0]);
+        $.ajax({
+            url: "http://localhost:8080/Bibased/upload",
+            type: "POST",
+            data: formData,
+            /**
+             *必须false才会自动加上正确的Content-Type
+             */
+            contentType: false,
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData: false,
+            success: function (data) {
+                // if (data.status == "true") {
+                    alert("上传！");
+                // }
+                // if (data.status == "error") {
+                //     alert(data.msg);
+                // }
+                // $("#imgWait").hide();
+            },
+            error: function () {
+                alert("上传失败！");
+                // $("#imgWait").hide();
+            }
+        });
+    });
+</script>
+</html>

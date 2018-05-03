@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布文章页面</title>
+    <link rel="icon" type="image/x-icon" href="../images/admin.png"/>
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">每日一报   发布管理</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item"><a href="">待审核文章</a></li>
+                <li class="layui-nav-item"><a href="">已驳回文章</a></li>
+                <li class="layui-nav-item"><a href="">已发布文章</a></li>
+                <li class="layui-nav-item"><a href="">要发布文章</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="show">
+            <table class="layui-hide" id="test" lay-filter="demo"></table>
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+        <div id="write" style="padding: 15px;">
+            <div class="write_bottom">
+                <select id="selType">
+                    <option value="0">请选择</option>
+                    <option value="1">原创</option>
+                    <option value="2">转载</option>
+                    <option value="3">翻译</option>
+                    <option value="4">球球</option>
+                </select>
+                <div class="write_title">
+                    <input type="text" id="txtTitle" maxlength="100" placeholder="输入文章标题">
+                </div>
+                <div class="write_btn">
+                    <button class="btn_fabu" id="btn_fabu">发布文章</button>
+                </div>
+                <div class="write_content">
+                    <div id="div1" class="toolbar"></div>
+                    <div id="div2" class="text"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+                        <p>请输入内容</p>
+                    </div>
+                </div>
+            </div>
+            <div class="write_last">
+                <div class="write_ok"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+
+<script type="text/javascript" src="../js/wangEditor.min.js"></script>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../layui/layui.all.js"></script>
+
+<style>
+    .write_bottom{
+        padding-top: 4px;
+    }
+    #selType {
+        width: 160px;
+        height: 40px;
+        padding: 8px 0 8px 16px;
+        margin: 5px 10px 5px 40px;
+        background-color: #f4f4f4;
+        border: none;
+        font-size: 16px;
+        color: #4f4f4f;
+        float: left;
+    }
+    .write_title{
+        margin: 5px 212px 5px 212px;
+    }
+    #txtTitle {
+        /*display: block;*/
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        padding: 0 16px;
+        border: none;
+        background-color: #f4f4f4;
+        font-size: 16px;
+        color: #4f4f4f;
+        float: left;
+    }
+    .write_btn{
+        width: 212px;
+        float: right;
+    }
+    .btn_fabu {
+        width: 132px;
+        margin: 0px 40px;
+        background: #c92027;
+        padding: 8px 16px;
+        font-size: 16px;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+    }
+    .write_content{
+        width: 1010px;
+        margin: 50px auto 0px auto;
+    }
+    #div2{
+        height: 565px;
+    }
+
+    .write_last {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(79,79,79,0.9);
+        z-index: 99999;
+    }
+    .write_ok{
+        width: 500px;
+        height: 300px;
+        background-color: white;
+        margin: 150px auto;
+    }
+</style>
+
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
+    editor.create();
+    // editor.txt.html('<p>用 JS 设置的内容</p>');
+    // editor.txt.append('<p>追加的内容</p>');
+    // editor.txt.clear();//  清空内容
+    // alert(editor.txt.html());// 获取html
+    // alert(editor.txt.text());// 获取text
+
+    $("#btn_fabu").click(function (){
+        // $(".write_last").css("display","block");
+        var options=$("#selType option:selected"); //获取选中的项
+        var txtTitle = $("#txtTitle").val();// 获取文章标题
+        var txtHtml = editor.txt.html();// 获取密码
+        var txtCate = options.val();//获取类别id
+        console.log("不挑剔  ："+txtTitle);
+        console.log("内容啊  ："+txtHtml);
+        console.log("类别啊  ："+txtCate);
+    });
+</script>
+
+</body>
+</html>

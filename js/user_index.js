@@ -13,6 +13,7 @@ $(".cate").on({
         $(this).css("color","#777777");
     }
 }) ;
+
 $(".user_so").click(function (){
     $("#user_so").css("display","block");
 });

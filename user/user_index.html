@@ -17,7 +17,7 @@
         <span class="header_left_title" id="header_left_title">每日一报新闻</span>
     </div>
     <div class="header_center">
-        <ul>
+        <ul id="cate">
             <li class="cate"><span class="en">商业</span></li>
             <li class="cate"><span class="en">智能</span></li>
             <li class="cate"><span class="en">设计</span></li>
@@ -53,7 +53,7 @@
 <script src="../js/user_index.js"></script>
 
 <style>
-    #test{
+    .article{
         width: 246px;
         height: 280px;
         margin: 4px 4px;
@@ -70,18 +70,18 @@
         var flow = layui.flow;
 
         flow.load({
-            elem: '#LAY_demo1' //流加载容器
-            , scrollElem: '#LAY_demo1' //滚动条所在元素，一般不用填，此处只是演示需要。
-            , isAuto: false
-            , isLazyimg: true
-            , done: function (page, next) { //执行下一页的回调
+            elem: '#LAY_demo1',  //流加载容器
+            scrollElem: '#LAY_demo1',  //滚动条所在元素，一般不用填，此处只是演示需要。
+            isAuto: false,
+            isLazyimg: true,
+            done: function (page, next) { //执行下一页的回调
                 //模拟数据插入
                 setTimeout(function () {
                     console.log(page,next)
                     var lis = [];
                     for (var i = 0; i < 4; i++) {
                         // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
-                        lis.push("<li id='test'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
+                        lis.push("<li class='article'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
                     }
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多

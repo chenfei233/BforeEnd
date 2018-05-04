@@ -43,15 +43,13 @@
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">文章管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">已发布文章</a></dd>
-                        <dd><a href="javascript:;">待审核文章</a></dd>
-                        <dd><a href="javascript:;">待定功能</a></dd>
-                        <dd><a href="">超链接</a></dd>
+                        <dd><a onclick="one()">待审核文章</a></dd>
+                        <dd><a onclick="two()">已通过文章</a></dd>
+                        <dd><a onclick="three()">被驳回文章</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -62,7 +60,6 @@
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="">云市场</a></li>
                 <li class="layui-nav-item"><a href="">添加发布用户</a></li>
             </ul>
         </div>
@@ -86,7 +83,6 @@
     </div>
 </div>
 <script src="../js/jquery-3.3.1.min.js"></script>
-<!--<script src="../layui/layui.js" charset="utf-8"></script>-->
 <script src="../layui/layui.all.js" charset="utf-8"></script>
 </body>
 <style>
@@ -111,26 +107,27 @@
         //执行一个 table 实例
         table.render({
             elem: '#test'
-            ,height: 500
-            ,url: 'http://localhost:8080/Bibased/article/list/' //数据接口
-            ,page: true //开启分页
+            ,height: 530
+            ,url: 'http://localhost:8080/Bibased/Article/findAll' //数据接口
+            // ,page: true //开启分页
             ,cols: [[ //表头
                 {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
-                {field: 'aietitle', title: '文章标题', width:220},
+                {field: 'aietitle', title: '文章标题', width:250},
                 {field: 'aiesort', title: '文章分类', width:120, sort: true},
-                {field: 'aietime', title: '发布时间', width:180, sort: true},
+                {field: 'aietime', title: '发布时间', width:200, sort: true},
                 {field: 'aiestate', title: '文章状态', width: 100},
-                {field: 'urname', title: '发布用户', width: 120, sort: true},
-                {fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+                {field: 'urname', title: '发布用户', width: 150, sort: true},
+                {fixed: 'right', width: 230, align:'center', toolbar: '#barDemo'}
             ]]
         });
 
         //监听工具条
         table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                ,layEvent = obj.event; //获得 lay-event 对应的值
+            var data = obj.data, //获得当前行数据
+                layEvent = obj.event; //获得 lay-event 对应的值
             if(layEvent === 'detail'){
                 layer.msg('查看操作');
+                console.log(data.aieid);
             } else if(layEvent === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     obj.del(); //删除对应行（tr）的DOM结构
@@ -141,7 +138,139 @@
                 layer.msg('编辑操作');
             }
         });
-
     });
+
+    function one() {
+        layui.use([ 'table'], function(){
+            table = layui.table //表格
+
+            //向世界问个好
+            layer.msg('Hello World');
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,height: 530
+                ,url: 'http://localhost:8080/Bibased/Article/findByAiestate?aiestate=0' //数据接口
+                // ,page: true //开启分页
+                ,cols: [[ //表头
+                    {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
+                    {field: 'aietitle', title: '文章标题', width:250},
+                    {field: 'aiesort', title: '文章分类', width:120, sort: true},
+                    {field: 'aietime', title: '发布时间', width:200, sort: true},
+                    {field: 'aiestate', title: '文章状态', width: 100},
+                    {field: 'urname', title: '发布用户', width: 150, sort: true},
+                    {fixed: 'right', width: 230, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+            //监听工具条
+            table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                    console.log(data.aieid);
+                } else if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.msg('编辑操作');
+                }
+            });
+        });
+    }
+
+    function two() {
+        layui.use([ 'table'], function(){
+            table = layui.table //表格
+
+            //向世界问个好
+            layer.msg('Hello World');
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,height: 530
+                ,url: 'http://localhost:8080/Bibased/Article/findByAiestate?aiestate=1' //数据接口
+                // ,page: true //开启分页
+                ,cols: [[ //表头
+                    {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
+                    {field: 'aietitle', title: '文章标题', width:250},
+                    {field: 'aiesort', title: '文章分类', width:120, sort: true},
+                    {field: 'aietime', title: '发布时间', width:200, sort: true},
+                    {field: 'aiestate', title: '文章状态', width: 100},
+                    {field: 'urname', title: '发布用户', width: 150, sort: true},
+                    {fixed: 'right', width: 230, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+            //监听工具条
+            table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                    console.log(data.aieid);
+                } else if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.msg('编辑操作');
+                }
+            });
+        });
+    }
+
+    function three() {
+        layui.use([ 'table'], function(){
+            table = layui.table //表格
+
+            //向世界问个好
+            layer.msg('Hello World');
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,height: 530
+                ,url: 'http://localhost:8080/Bibased/Article/findByAiestate?aiestate=-1' //数据接口
+                // ,page: true //开启分页
+                ,cols: [[ //表头
+                    {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
+                    {field: 'aietitle', title: '文章标题', width:250},
+                    {field: 'aiesort', title: '文章分类', width:120, sort: true},
+                    {field: 'aietime', title: '发布时间', width:200, sort: true},
+                    {field: 'aiestate', title: '文章状态', width: 100},
+                    {field: 'urname', title: '发布用户', width: 150, sort: true},
+                    {fixed: 'right', width: 230, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+            //监听工具条
+            table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                    console.log(data.aieid);
+                } else if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.msg('编辑操作');
+                }
+            });
+        });
+    }
+
 </script>
 </html>

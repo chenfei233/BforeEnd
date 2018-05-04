@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>发布人首页</title>
-    <link rel="icon" type="image/x-icon" href="../images/admin.png"/>
+    <link rel="icon" type="image/x-icon" href="../images/write.png"/>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">每日一报   发布管理</div>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">控制台</a></li>
-        </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
@@ -33,16 +29,17 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item"><a href="">待审核文章</a></li>
-                <li class="layui-nav-item"><a href="">已驳回文章</a></li>
-                <li class="layui-nav-item"><a href="">已发布文章</a></li>
-                <li class="layui-nav-item"><a href="">要发布文章</a></li>
+                <li class="layui-nav-item"><a onclick="one()">待审核文章</a></li>
+                <li class="layui-nav-item"><a onclick="two()">已驳回文章</a></li>
+                <li class="layui-nav-item"><a onclick="three()">已发布文章</a></li>
+                <li class="layui-nav-item"><a onclick="four()">要发布文章</a></li>
             </ul>
         </div>
     </div>
 
     <div class="layui-body">
-        <div class="show">
+
+        <div class="show" id="show_table">
             <table class="layui-hide" id="test" lay-filter="demo"></table>
             <script type="text/html" id="barDemo">
                 <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
@@ -50,15 +47,43 @@
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
             </script>
         </div>
-        <!--<div style="padding: 15px;">内容主体区域</div>-->
+
+        <div style="padding: 15px;" id="add_article">
+            <div class="write_bottom">
+                <select id="selType">
+                    <option value="0">请选择</option>
+                    <option value="1">原创</option>
+                    <option value="2">转载</option>
+                    <option value="3">翻译</option>
+                    <option value="4">球球</option>
+                </select>
+                <div class="write_title">
+                    <input type="text" id="txtTitle" maxlength="100" placeholder="输入文章标题">
+                </div>
+                <div class="write_btn">
+                    <button class="btn_fabu" id="btn_fabu">发布文章</button>
+                </div>
+                <div class="write_content">
+                    <div id="div1" class="toolbar"></div>
+                    <div id="div2" class="text"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+                        <p>请输入内容</p>
+                    </div>
+                </div>
+            </div>
+            <div class="write_last">
+                <div class="write_ok">
+                    <span class="write_no"><img src="../images/error.png" alt="取消" width="32" height="32" id="write_no"></span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="layui-footer">
-        <!-- 底部固定区域 -->
         © layui.com - 底部固定区域
     </div>
 </div>
 
+<script type="text/javascript" src="../js/wangEditor.min.js"></script>
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../layui/layui.all.js"></script>
 
@@ -70,52 +95,264 @@
         position: absolute;
         top: -10px;
     }
+
+    .write_bottom{
+        padding-top: 4px;
+    }
+    #selType {
+        width: 160px;
+        height: 40px;
+        padding: 8px 0 8px 16px;
+        margin: 5px 10px 5px 40px;
+        background-color: #f4f4f4;
+        border: none;
+        font-size: 16px;
+        color: #4f4f4f;
+        float: left;
+    }
+    .write_title{
+        margin: 5px 212px 5px 212px;
+    }
+    #txtTitle {
+        /*display: block;*/
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        padding: 0 16px;
+        border: none;
+        background-color: #f4f4f4;
+        font-size: 16px;
+        color: #4f4f4f;
+        float: left;
+    }
+    .write_btn{
+        width: 212px;
+        float: right;
+    }
+    .btn_fabu {
+        width: 132px;
+        margin: 0px 40px;
+        background: #c92027;
+        padding: 8px 16px;
+        font-size: 16px;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+    }
+    .write_content{
+        width: 1010px;
+        margin: 50px auto 0px auto;
+    }
+    #div2{
+        height: 430px;
+    }
+
+    .write_last {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /*background-color: rgba(79,79,79,0.9);*/
+        background-color: rgba(99,99,99,0.6);
+        z-index: 999999;
+    }
+    .write_ok{
+        width: 800px;
+        height: 500px;
+        background-color: white;
+        margin: 80px auto;
+    }
+    .write_no{
+        width: 40px;
+        height: 32px;
+        float: right;
+        margin-top: 8px;
+    }
 </style>
 <script>
-    layui.config({
-        version: '1520760931738' //为了更新 js 缓存，可忽略
+
+    $("#add_article").hide();// 隐藏写作div
+
+    var layer; // layer全局定义
+
+    /**
+     *  layer全局化定义
+     * */
+    layui.use('layer', function () {
+        layer = layui.layer;
+    });
+    layer.msg('用户：闲心---欢迎您');
+
+    var E = window.wangEditor;
+    var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
+    editor.create();
+
+    // editor.txt.html('<p>用 JS 设置的内容</p>');
+    // editor.txt.append('<p>追加的内容</p>');
+    // editor.txt.clear();//  清空内容
+    // alert(editor.txt.html());// 获取html
+    // alert(editor.txt.text());// 获取text
+
+    $("#btn_fabu").click(function (){
+        // $(".write_last").css("display","block");
+        $(".write_last").show();
+        var options=$("#selType option:selected"); //获取选中的项
+        var txtTitle = $("#txtTitle").val();// 获取文章标题
+        var txtHtml = editor.txt.html();// 获取内容
+        var txtCate = options.val();//获取类别id
+        console.log("不挑剔  ："+txtTitle);
+        console.log("内容啊  ："+txtHtml);
+        console.log("类别啊  ："+txtCate);
     });
 
-    layui.use([ 'table'], function(){
-        table = layui.table //表格
-
-        //向世界问个好
-        layer.msg('Hello World');
-
-        //执行一个 table 实例
-        table.render({
-            elem: '#test'
-            ,height: 500
-            ,url: 'http://localhost:8080/Bibased/article/list/' //数据接口
-            ,page: true //开启分页
-            ,cols: [[ //表头
-                {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
-                {field: 'aietitle', title: '文章标题', width:220},
-                {field: 'aiesort', title: '文章分类', width:120, sort: true},
-                {field: 'aietime', title: '发布时间', width:180, sort: true},
-                {field: 'aiestate', title: '*******', width: 100},
-                {field: 'urname', title: '*******', width: 120},
-                {fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
-            ]]
-        });
-
-        //监听工具条
-        table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                ,layEvent = obj.event; //获得 lay-event 对应的值
-            if(layEvent === 'detail'){
-                layer.msg('查看操作');
-            } else if(layEvent === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-                    //向服务端发送删除指令
-                });
-            } else if(layEvent === 'edit'){
-                layer.msg('编辑操作');
-            }
-        });
-
+    $("#write_no").click(function () {
+        $(".write_last").hide();
     });
+
+    function one() { //待审核文章
+
+        $("#show_table").show();// 显示表格div
+
+        $("#add_article").hide();// 隐藏写作div
+
+        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=0';
+
+        layui.use([ 'table'], function(){
+            table = layui.table; //表格
+            //执行一个 table 实例
+            table.render({
+                elem: '#test',
+                height: 530,
+                url: str, //数据接口
+                // page: true, //开启分页
+                cols: [[ //表头
+                    {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
+                    {field: 'aietitle', title: '文章标题', width:500},
+                    {field: 'aiesort', title: '文章分类', width:120, sort: true},
+                    {field: 'aietime', title: '发布时间', width:200, sort: true},
+                    {fixed: 'right', width: 220, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+            //监听工具条
+            table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                } else if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.msg('编辑操作');
+                }
+            });
+
+        });
+    }
+
+    function two() { //已驳回文章
+
+        $("#show_table").show();// 显示表格div
+
+        $("#add_article").hide();// 隐藏写作div
+
+        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=-1';
+
+        layui.use([ 'table'], function(){
+            table = layui.table; //表格
+            //执行一个 table 实例
+            table.render({
+                elem: '#test',
+                height: 530,
+                url: str, //数据接口
+                // page: true, //开启分页
+                cols: [[ //表头
+                    {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
+                    {field: 'aietitle', title: '文章标题', width:500},
+                    {field: 'aiesort', title: '文章分类', width:120, sort: true},
+                    {field: 'aietime', title: '发布时间', width:200, sort: true},
+                    {fixed: 'right', width: 230, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+            //监听工具条
+            table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                } else if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.msg('编辑操作');
+                }
+            });
+
+        });
+    }
+
+    function three() { //已发布文章
+
+        $("#show_table").show();// 显示表格div
+
+        $("#add_article").hide();// 隐藏写作div
+
+        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=1';
+
+        layui.use([ 'table'], function(){
+            table = layui.table; //表格
+            //执行一个 table 实例
+            table.render({
+                elem: '#test',
+                height: 530,
+                url: str, //数据接口
+                // page: true, //开启分页
+                cols: [[ //表头
+                    {field: 'aieid', title: '文章ID', width:100, sort: true, fixed: 'left'},
+                    {field: 'aietitle', title: '文章标题', width:500},
+                    {field: 'aiesort', title: '文章分类', width:120, sort: true},
+                    {field: 'aietime', title: '发布时间', width:200, sort: true},
+                    {fixed: 'right', width: 230, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+            //监听工具条
+            table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail'){
+                    layer.msg('查看操作');
+                } else if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.msg('编辑操作');
+                }
+            });
+
+        });
+    }
+
+    function four() {
+
+        $("#show_table").hide();// 隐藏表格div
+
+        $("#add_article").show();// 显示写作div
+
+    }
+
 </script>
 </html>

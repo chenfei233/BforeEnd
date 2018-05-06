@@ -267,20 +267,30 @@
             var ey_pswd = $("#ey_pswd").val();// 获取密码
             if (ey_name.length > 0 && ey_pswd.length > 0 && flag) {
                 $.ajax({
-                    url:"http://localhost:8080/Bibased/adminLogin", //处理登录页面的路径
+                    url:"http://localhost:8080/Bibased/Admin/adminLogin", //处理登录页面的路径
                     data:{
                         admnum:ey_name,
                         admpwd:ey_pswd
                     },//要提交的数据是一个JSON
-                    type:"GET", //提交方式
+                    type:"POST", //提交方式
                     dataType:"TEXT", //返回数据的类型
                     //TEXT字符串 JSON返回JSON XML返回XML
                     success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                         if(data){
+
                             layer.open({
                                 title: '提醒',
                                 content: '登陆成功！'
                             });
+
+                            var str=$.parseJSON(data);
+                            setCookie("admid", str.admid, 1);
+                            setCookie("admname", str.admname, 1);
+                            setCookie("admicon", str.admicon, 1);
+                            setCookie("admnum", str.admnum, 1);
+
+                            window.location.href = "admin_index.html";
+
                         }else{
                             layer.open({
                                 title: '警告',
@@ -290,7 +300,10 @@
                         }
                     },
                     error:function (data) {
-                        alert("出错了!");
+                        layer.open({
+                            title: '警告',
+                            content: '出错了！'
+                        });
                     }
                 });
             }else if(ey_name.length == 0 || ey_pswd.length == 0){
@@ -325,7 +338,7 @@
             if (rl_name.length > 0 && el_pwdo.length > 0 && el_pwdt.length > 0 && !strfo && !strft) {
                 // 输入没问题则进入ajax传值
                 $.ajax({
-                    url:"http://localhost:8080/Bibased/adminRegister", //处理注册页面的路径
+                    url:"http://localhost:8080/Bibased/Admin/addAdmin", //处理注册页面的路径
                     data:{
                         admnum:rl_name,
                         admpwd:el_pwdo
@@ -337,8 +350,9 @@
                         if(data){
                             layer.open({
                                 title: '提示',
-                                content: '注册成功!<br>正在跳转进入登录页面'
+                                content: '注册成功!<br>正在跳转进入系统首页'
                             });
+                            window.location.href = "admin_index.html";
                         }else{
                             layer.open({
                                 title: '提示',

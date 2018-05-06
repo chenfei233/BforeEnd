@@ -2,13 +2,188 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>发布用户登录</title>
-    <link rel="icon" type="image/x-icon" href="../images/admin.png"/>
+    <title>发布员登录</title>
+    <link rel="icon" type="image/x-icon" href="../images/write.png"/>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
-    <script src="../js/jquery-3.3.1.min.js"></script>
-    <script src="../layui/layui.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/phuser_login.css" />
 </head>
 <body>
-
+<div class="phuser">
+    <div class="layui-main">
+        <div class="phuser_entry" id="phuser_entry">   <!-- 登录 -->
+            <div class="phuser_entry_title">发布员登录</div>
+            <div class="phuser_entry_cont">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input id="ey_name" type="text" name="title" placeholder="请输入用户名" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input id="ey_pswd" type="password" name="password" placeholder="请输入密码" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input id="ey_code" type="text" name="title" placeholder="验证码" class="layui-input" style="width: 150px">
+                    </div>
+                    <div id="code_ok">
+                        <img src="../images/ok.png" alt="" height="45px" width="45px"/>
+                    </div>
+                    <div id="code_no">
+                        <img src="../images/no.png" alt="" height="45px" width="45px"/>
+                    </div>
+                    <input type="button" id="code" title='点击更换验证码' value="">
+                </div>
+                <div class="layui-form-item">
+                    <button id="entry" class="layui-btn">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<!--<script src="../js/phuser_login.js"></script>-->
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="../js/isCookie.js"></script>
+<style>
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#code_ok").hide();// 隐藏OKdiv
+        $("#code_no").hide();// 隐藏NOdiv
+
+        var layer; // layer全局定义
+        var code=""; // 在全局定义验证码
+        var flag=false; // 输入验证码是否正确标志
+
+        /**
+         *  layer全局化定义
+         * */
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
+
+        createCode(); // 第一次运行显示验证码
+
+        /**
+         *  验证码函数
+         * */
+        function createCode() {
+            code="";
+
+            $("#code_ok").hide();// 隐藏OKdiv
+            $("#code_no").hide();// 隐藏NOdiv
+
+            var codeLength = 4;// 验证码的长度
+            $("#code").attr({
+                "value": ""
+            });
+            var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');// 随机数
+            for (var i = 0; i < codeLength; i++) {// 循环操作
+                var index = Math.floor(Math.random() * 36);// 取得随机数的索引（0~35）
+                code += random[index];// 根据索引取得随机数加到code上
+            }
+            $("#code").attr({
+                "value": code
+            });
+        }
+
+        /**
+         *  校验验证码正确性
+         * */
+        $("#ey_code").on('input propertychange', function () {
+            var ey_code = $("#ey_code").val().toUpperCase(); // 转换为大写
+            if (ey_code != code && ey_code.length>3) {
+                flag=false;
+                $("#code_ok").hide();// 隐藏OKdiv
+                $("#code_no").show();// 显示NOdiv
+            } else if (ey_code == code && ey_code.length>3){
+                flag=true;
+                $("#code_ok").show();// 显示OKdiv
+                $("#code_no").hide();// 隐藏NOdiv
+            } else {
+                flag=false;
+                $("#code_ok").hide();// 隐藏OKdiv
+                $("#code_no").hide();// 隐藏NOdiv
+            }
+        });
+
+        /**
+         *  点击刷新验证码
+         * */
+        $("#code").click(function (){
+            createCode();
+        });
+
+        /**
+         *  登录按钮 （校验账号密码输入是否为空）
+         * */
+        $("#entry").click(function () {
+            var ey_name = $("#ey_name").val();// 获取用户名
+            var ey_pswd = $("#ey_pswd").val();// 获取密码
+            if (ey_name.length > 0 && ey_pswd.length > 0 && flag) {
+                $.ajax({
+                    url:"http://localhost:8080/Bibased/Phuser/phuserLogin", //处理登录页面的路径
+                    data:{
+                        phnum:ey_name,
+                        phpswd:ey_pswd
+                    },//要提交的数据是一个JSON
+                    type:"POST", //提交方式
+                    dataType:"TEXT", //返回数据的类型
+                    //TEXT字符串 JSON返回JSON XML返回XML
+                    success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                        if(data){
+
+                            layer.open({
+                                title: '提醒',
+                                content: '登陆成功！'
+                            });
+
+                            var str=$.parseJSON(data);
+                            setCookie("phid", str.phid, 1);
+                            setCookie("phnum", str.phnum, 1);
+                            setCookie("phname", str.phname, 1);
+                            setCookie("phicon", str.phicon, 1);
+                            setCookie("phemail", str.phemail, 1);
+                            setCookie("phbrief", str.phbrief, 1);
+
+                            window.location.href = "phuser_index.html";
+                            // window.location.href = "http://www.baidu.com";
+
+                            // console.log(getCookie("phbrief"));
+                            // console.log(getCookie("phicon"));
+
+                        }else{
+                            layer.open({
+                                title: '警告',
+                                content: '账号或密码错误！'
+                            });
+                            createCode(); // 刷新一次验证码
+                        }
+                    },
+                    error:function (data) {
+                        alert("出错了!");
+                    }
+                });
+            }else if(ey_name.length == 0 || ey_pswd.length == 0){
+                createCode();
+                layer.open({
+                    title: '警告',
+                    content: '账号或密码不能为空！'
+                });
+            } else if(!flag){
+                createCode();
+                layer.open({
+                    title: '警告',
+                    content: '验证码不正确！'
+                });
+            }
+        });
+    });
+</script>
 </html>

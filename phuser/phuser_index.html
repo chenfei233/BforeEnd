@@ -5,6 +5,7 @@
     <title>发布人首页</title>
     <link rel="icon" type="image/x-icon" href="../images/write.png"/>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/phuser_index.css" />
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -51,11 +52,7 @@
         <div style="padding: 15px;" id="add_article">
             <div class="write_bottom">
                 <select id="selType">
-                    <option value="0">请选择</option>
-                    <option value="1">原创</option>
-                    <option value="2">转载</option>
-                    <option value="3">翻译</option>
-                    <option value="4">球球</option>
+                    <!--类别信息-->
                 </select>
                 <div class="write_title">
                     <input type="text" id="txtTitle" maxlength="100" placeholder="输入文章标题">
@@ -72,7 +69,18 @@
             </div>
             <div class="write_last">
                 <div class="write_ok">
-                    <span class="write_no"><img src="../images/error.png" alt="取消" width="32" height="32" id="write_no"></span>
+                    <span class="write_no"><img src="../images/error.png" alt="取消" width="24" height="24" id="write_no"></span>
+                    <div class="write_img">
+                        <!--245*185-->
+                        <div id="show_img"></div>
+                        <div class="show_img">
+                            <span class="file-box">
+                                选择文件
+                                <input type="file" class="file-btn" id="fileup"onchange="imgChange()" />
+                            </span>
+                            <span type="button" class="fabu_ok" id="fabu_ok" >确认发布</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,94 +94,16 @@
 <script type="text/javascript" src="../js/wangEditor.min.js"></script>
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../layui/layui.all.js"></script>
-
+<script src="../js/isCookie.js"></script>
 </body>
 <style>
-    .show{
-        width: 100%;
-        height: 500px;
-        position: absolute;
-        top: -10px;
-    }
 
-    .write_bottom{
-        padding-top: 4px;
-    }
-    #selType {
-        width: 160px;
-        height: 40px;
-        padding: 8px 0 8px 16px;
-        margin: 5px 10px 5px 40px;
-        background-color: #f4f4f4;
-        border: none;
-        font-size: 16px;
-        color: #4f4f4f;
-        float: left;
-    }
-    .write_title{
-        margin: 5px 212px 5px 212px;
-    }
-    #txtTitle {
-        /*display: block;*/
-        width: 100%;
-        height: 40px;
-        box-sizing: border-box;
-        padding: 0 16px;
-        border: none;
-        background-color: #f4f4f4;
-        font-size: 16px;
-        color: #4f4f4f;
-        float: left;
-    }
-    .write_btn{
-        width: 212px;
-        float: right;
-    }
-    .btn_fabu {
-        width: 132px;
-        margin: 0px 40px;
-        background: #c92027;
-        padding: 8px 16px;
-        font-size: 16px;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-    }
-    .write_content{
-        width: 1010px;
-        margin: 50px auto 0px auto;
-    }
-    #div2{
-        height: 430px;
-    }
-
-    .write_last {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        /*background-color: rgba(79,79,79,0.9);*/
-        background-color: rgba(99,99,99,0.6);
-        z-index: 999999;
-    }
-    .write_ok{
-        width: 800px;
-        height: 500px;
-        background-color: white;
-        margin: 80px auto;
-    }
-    .write_no{
-        width: 40px;
-        height: 32px;
-        float: right;
-        margin-top: 8px;
-    }
 </style>
 <script>
 
     $("#add_article").hide();// 隐藏写作div
+
+    findAllCategory(); // 显示所有类别
 
     var layer; // layer全局定义
 
@@ -183,7 +113,7 @@
     layui.use('layer', function () {
         layer = layui.layer;
     });
-    layer.msg('用户：闲心---欢迎您');
+    layer.msg('欢迎您');
 
     var E = window.wangEditor;
     var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
@@ -210,6 +140,41 @@
     $("#write_no").click(function () {
         $(".write_last").hide();
     });
+
+    function findAllCategory() {//显示类别
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Category/findAll", //处理登录页面的路径
+            data:{  },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                if(data){
+
+                    var str=$.parseJSON(data);
+
+                    // console.log(str.length);
+
+                    for (var i=0; i<str.length; i++){
+                        $("#selType").append("<option value='"+str[i].cgyid+"'>"+str[i].cgyname+"</option>");
+                    }
+                    // $("p").append("Some appended text.");
+
+                }else{
+                    layer.open({
+                        title: '警告',
+                        content: '类别获取错误！'
+                    });
+                }
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '出错了！'
+                });
+            }
+        });
+    }
 
     function one() { //待审核文章
 
@@ -353,6 +318,84 @@
         $("#add_article").show();// 显示写作div
 
     }
+
+    function imgChange() { // 文件上传选中并显示
+        var file =document.getElementById("fileup");
+        var imgUrl =window.URL.createObjectURL(file.files[0]);
+        // var img =document.getElementById('imghead');
+        $("#show_img").html("<img src='"+imgUrl+"' width='245' height='185'>");
+        // console.log(imgUrl)
+    }
+
+    $("#fabu_ok").click(function () {
+
+        var formData = new FormData();
+        formData.append("file", document.getElementById("fileup").files[0]);
+        $.ajax({
+            url: "http://localhost:8080/Bibased/upload",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log("路径："+data)
+                if(data){
+                    var aieimg=data;//首页图片路径
+                    var aietitle=$("#txtTitle").val();//文章标题
+                    var aiecontent=editor.txt.html();//文章内容
+                    var phid=getCookie("phid");//发布用户id
+                    var cgyid=$("#selType").val();//类别id
+                    console.log("123132132");
+                    $.ajax({
+                        url:"http://localhost:8080/Bibased/Article/addArticle", //处理登录页面的路径
+                        data:{
+                            aieimg:aieimg,
+                            aietitle:aietitle,
+                            aiecontent:aiecontent,
+                            phid:phid,
+                            cgyid:cgyid
+                        },//要提交的数据是一个JSON
+                        type:"POST", //提交方式
+                        dataType:"TEXT", //返回数据的类型
+                        //TEXT字符串 JSON返回JSON XML返回XML
+                        success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                            if(data){
+
+                                layer.open({
+                                    title: '提醒',
+                                    content: '发布成功！'
+                                });
+                                window.location.href = "phuser_index.html";
+
+                            }else{
+                                layer.open({
+                                    title: '警告',
+                                    content: '发布失败！'
+                                });
+                            }
+                        },
+                        error:function (data) {
+                            layer.open({
+                                title: '警告',
+                                content: '出错了！'
+                            });
+                        }
+                    });
+                }else{
+                    layer.open({
+                        title: '警告',
+                        content: '上传失败！'
+                    });
+                }
+            },
+            error: function () {
+                layer.open({
+                    title: '警告',
+                    content: '上传失败！'
+                });
+            }
+        });
+    });
 
 </script>
 </html>

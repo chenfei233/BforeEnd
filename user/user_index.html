@@ -54,9 +54,9 @@
 
 <style>
     .article{
-        width: 246px;
+        width: 245px;
         height: 280px;
-        margin: 4px 4px;
+        margin: 5px 5px;
         background-color: #66ccff;
         float: left;
     }
@@ -77,7 +77,7 @@
             done: function (page, next) { //执行下一页的回调
                 //模拟数据插入
                 setTimeout(function () {
-                    console.log(page,next)
+                    console.log(page,next);
                     var lis = [];
                     for (var i = 0; i < 4; i++) {
                         // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')

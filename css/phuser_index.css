@@ -1,0 +1,136 @@
+.show{
+    width: 100%;
+    height: 500px;
+    position: absolute;
+    top: -10px;
+}
+
+.write_bottom{
+    padding-top: 4px;
+}
+#selType {
+    width: 160px;
+    height: 40px;
+    padding: 8px 0 8px 16px;
+    margin: 5px 10px 5px 40px;
+    background-color: #f4f4f4;
+    border: none;
+    font-size: 16px;
+    color: #4f4f4f;
+    float: left;
+}
+.write_title{
+    margin: 5px 212px 5px 212px;
+}
+#txtTitle {
+    /*display: block;*/
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border: none;
+    background-color: #f4f4f4;
+    font-size: 16px;
+    color: #4f4f4f;
+    float: left;
+}
+.write_btn{
+    width: 212px;
+    float: right;
+}
+.btn_fabu {
+    width: 132px;
+    margin: 0px 40px;
+    background: #c92027;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+.write_content{
+    width: 1010px;
+    margin: 50px auto 0px auto;
+}
+#div2{
+    height: 430px;
+}
+.write_last {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(99,99,99,0.6);
+    z-index: 999999;
+}
+.write_ok{
+    width: 400px;
+    height: 350px;
+    background-color: white;
+    margin: 150px auto;
+    position: relative;
+}
+.write_no{
+    width: 32px;
+    height: 24px;
+    float: right;
+    margin-top: 8px;
+}
+.write_img{
+    width: 300px;
+    height: 400px;
+    /*background-color: #777777;*/
+    position: inherit;
+    top: 20px;
+    left: 50px;
+}
+#show_img{
+    width: 245px;
+    height: 185px;
+    margin: 0 auto;
+    background-color: #1E9FFF;
+    position: inherit;
+    top: 30px;
+}
+.show_img{
+    position: inherit;
+    top: 60px;
+}
+
+.file-box{
+    display: inline-block;
+    position: relative;
+    padding: 3px 5px;
+    overflow: hidden;
+    color:#fff;
+    background-color: #1E9FFF;
+}
+
+.file-btn{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    outline: none;
+    background-color: transparent;
+    filter:alpha(opacity=0);
+    -moz-opacity:0;
+    -khtml-opacity: 0;
+    opacity: 0;
+}
+.fabu_ok{
+    width: 72px;
+    height: 25px;
+    outline: none;
+    /*padding: 3px 5px;*/
+    position: absolute;
+    background-color: #1E9FFF;
+    color:#fff;
+    line-height: 25px;
+    text-align: center;
+    /*top: -3px;*/
+    right: 0;
+}

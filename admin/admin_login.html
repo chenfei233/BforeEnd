@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script src="../layui/layui.js"></script>
+    <script src="../js/isCookie.js"></script>
 </head>
 <body>
 <div class="admin">
@@ -341,17 +342,27 @@
                     url:"http://localhost:8080/Bibased/Admin/addAdmin", //处理注册页面的路径
                     data:{
                         admnum:rl_name,
-                        admpwd:el_pwdo
+                        admpwd:el_pwdo,
+                        admname:"用户u_298",
+                        admicon:"../images/user_face.png"
                     },//要提交的数据是一个JSON
                     type:"POST", //提交方式
                     dataType:"TEXT", //返回数据的类型
                     //TEXT字符串 JSON返回JSON XML返回XML
                     success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                         if(data){
+
+                            var str=$.parseJSON(data);
+                            setCookie("admid", str.admid, 1);
+                            setCookie("admname", str.admname, 1);
+                            setCookie("admicon", str.admicon, 1);
+                            setCookie("admnum", str.admnum, 1);
+
                             layer.open({
                                 title: '提示',
                                 content: '注册成功!<br>正在跳转进入系统首页'
                             });
+
                             window.location.href = "admin_index.html";
                         }else{
                             layer.open({

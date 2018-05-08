@@ -13,9 +13,7 @@
         <div class="layui-logo">每日一报   发布管理</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                <a href="javascript:;" id="user_show">
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -103,6 +101,7 @@
 
     $("#add_article").hide();// 隐藏写作div
 
+    firstShow(); // 显示用户名头像和昵称
     findAllCategory(); // 显示所有类别
 
     var layer; // layer全局定义
@@ -113,7 +112,7 @@
     layui.use('layer', function () {
         layer = layui.layer;
     });
-    layer.msg('欢迎您');
+    layer.msg('欢迎您：'+getCookie("phname"));
 
     var E = window.wangEditor;
     var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
@@ -132,14 +131,18 @@
         var txtTitle = $("#txtTitle").val();// 获取文章标题
         var txtHtml = editor.txt.html();// 获取内容
         var txtCate = options.val();//获取类别id
-        console.log("不挑剔  ："+txtTitle);
-        console.log("内容啊  ："+txtHtml);
-        console.log("类别啊  ："+txtCate);
+        // console.log("不挑剔  ："+txtTitle);
+        // console.log("内容啊  ："+txtHtml);
+        // console.log("类别啊  ："+txtCate);
     });
 
     $("#write_no").click(function () {
         $(".write_last").hide();
     });
+
+    function firstShow() {//显示用户头像和昵称
+        $("#user_show").append("<img src=" + getCookie("phicon") + " class='layui-nav-img'>" + getCookie("phname"))
+    }
 
     function findAllCategory() {//显示类别
         $.ajax({
@@ -170,7 +173,7 @@
             error:function (data) {
                 layer.open({
                     title: '警告',
-                    content: '出错了！'
+                    content: '类别获取错误！'
                 });
             }
         });
@@ -203,8 +206,8 @@
 
             //监听工具条
             table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-                var data = obj.data //获得当前行数据
-                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
                     layer.msg('查看操作');
                 } else if(layEvent === 'del'){
@@ -212,6 +215,7 @@
                         obj.del(); //删除对应行（tr）的DOM结构
                         layer.close(index);
                         //向服务端发送删除指令
+                        deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
                     layer.msg('编辑操作');
@@ -248,15 +252,15 @@
 
             //监听工具条
             table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-                var data = obj.data //获得当前行数据
-                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
                     layer.msg('查看操作');
                 } else if(layEvent === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构
-                        layer.close(index);
                         //向服务端发送删除指令
+                        deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
                     layer.msg('编辑操作');
@@ -293,8 +297,8 @@
 
             //监听工具条
             table.on('tool(demo)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-                var data = obj.data //获得当前行数据
-                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
                     layer.msg('查看操作');
                 } else if(layEvent === 'del'){
@@ -302,6 +306,7 @@
                         obj.del(); //删除对应行（tr）的DOM结构
                         layer.close(index);
                         //向服务端发送删除指令
+                        deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
                     layer.msg('编辑操作');
@@ -338,14 +343,14 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log("路径："+data)
+                // console.log("路径："+data)
                 if(data){
                     var aieimg=data;//首页图片路径
                     var aietitle=$("#txtTitle").val();//文章标题
                     var aiecontent=editor.txt.html();//文章内容
                     var phid=getCookie("phid");//发布用户id
                     var cgyid=$("#selType").val();//类别id
-                    console.log("123132132");
+                    // console.log("123132132");
                     $.ajax({
                         url:"http://localhost:8080/Bibased/Article/addArticle", //处理登录页面的路径
                         data:{
@@ -396,6 +401,30 @@
             }
         });
     });
+
+    function deleteByAieid(aieid) {//删除文章
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/deleteByAieid", //处理登录页面的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                layer.open({
+                    title: '提醒',
+                    content: '删除成功！'
+                });
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '删除失败！'
+                });
+            }
+        });
+    }
 
 </script>
 </html>

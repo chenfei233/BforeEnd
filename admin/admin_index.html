@@ -28,9 +28,7 @@
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                <a href="javascript:;" id="user_show">
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -57,7 +55,6 @@
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">类别添加</a></dd>
                         <dd><a href="javascript:;">类别修改</a></dd>
-                        <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item"><a href="">添加发布用户</a></li>
@@ -66,15 +63,15 @@
     </div>
 
     <div class="layui-body">
-        <div class="show">
+        <div class="show" id="show_table">
             <table class="layui-hide" id="test" lay-filter="demo"></table>
             <script type="text/html" id="barDemo">
                 <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
             </script>
         </div>
-        <!--<div style="padding: 15px;">内容主体区域</div>-->
+        <div style="padding: 15px;"  id="show_article"></div>
     </div>
 
     <div class="layui-footer">
@@ -84,6 +81,7 @@
 </div>
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../layui/layui.all.js" charset="utf-8"></script>
+<script src="../js/isCookie.js"></script>
 </body>
 <style>
     .show{
@@ -98,6 +96,12 @@
         version: '1520760931738' //为了更新 js 缓存，可忽略
     });
 
+    firstShow();
+
+    function firstShow() {//显示用户头像和昵称
+        $("#user_show").append("<img src=" + getCookie("admicon") + " class='layui-nav-img'>" + getCookie("admname"));
+    }
+    
     layui.use([ 'table'], function(){
         table = layui.table //表格
 
@@ -133,6 +137,7 @@
                     obj.del(); //删除对应行（tr）的DOM结构
                     layer.close(index);
                     //向服务端发送删除指令
+                    deleteByAieid(data.aieid);
                 });
             } else if(layEvent === 'edit'){
                 layer.msg('编辑操作');
@@ -169,13 +174,14 @@
                 var data = obj.data, //获得当前行数据
                     layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
-                    layer.msg('查看操作');
-                    console.log(data.aieid);
+                    // layer.msg('查看操作');
+                    showArticle(data.aieid)
                 } else if(layEvent === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构
                         layer.close(index);
                         //向服务端发送删除指令
+                        deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
                     layer.msg('编辑操作');
@@ -220,6 +226,7 @@
                         obj.del(); //删除对应行（tr）的DOM结构
                         layer.close(index);
                         //向服务端发送删除指令
+                        deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
                     layer.msg('编辑操作');
@@ -264,6 +271,7 @@
                         obj.del(); //删除对应行（tr）的DOM结构
                         layer.close(index);
                         //向服务端发送删除指令
+                        deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
                     layer.msg('编辑操作');
@@ -272,5 +280,55 @@
         });
     }
 
+    function deleteByAieid(aieid) {//删除文章
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/deleteByAieid", //处理登录页面的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                layer.open({
+                    title: '提醒',
+                    content: '删除成功！'
+                });
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '删除失败！'
+                });
+            }
+        });
+    }
+
+    function showArticle(aieid) {
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/findByAieid", //处理登录页面的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                var str=$.parseJSON(data);
+                console.log(str);
+                console.log(str.aietitle);
+                console.log(str.aiecontent);
+                console.log(str.cgyname);
+                console.log(str.cgyicon);
+                console.log(str.aietime);
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '删除失败！'
+                });
+            }
+        });
+    }
 </script>
 </html>

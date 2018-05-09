@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>每日一报</title>
+    <link rel="icon" type="image/x-icon" href="../images/earth.png"/>
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/user_index.css" />
+</head>
+<body>
+<!--首页头部-->
+<div class="index_header">
+    <div class="header_left">
+        <div class="header_left_icon">
+            <img src="../images/r_white.png" alt="每日一报" width="56" height="56">
+        </div>
+        <span class="header_left_title" id="header_left_title">每日一报新闻</span>
+    </div>
+    <div class="header_center">
+        <ul id="cate">
+            <li class="cate"><span class="en">商业</span></li>
+            <li class="cate"><span class="en">智能</span></li>
+            <li class="cate"><span class="en">设计</span></li>
+            <li class="cate"><span class="en">时尚</span></li>
+            <li class="cate"><span id="btn_fabu">娱乐</span></li>
+            <li class="cate"><span>城市</span></li>
+            <li class="cate"><span>游戏</span></li>
+        </ul>
+    </div>
+    <div class="header_right">
+        <span class="header_right_app">APP</span>
+        <span class="header_right_so">
+            <img src="../images/user_so.png" alt="" width="18" height="18" class="user_so">
+        </span>
+        <div class="user_msg">
+            <img class="user_img" src="../images/user_face.png" alt="" width="36" height="36">
+            <span class="user_name">特使的同户名安卡</span>
+            <span class="user_logout">退出</span>
+        </div>
+        <span class="header_right_about">关于我们</span>
+    </div>
+</div>
+<!--文章详情展示-->
+<div style="padding-top: 75px;padding-bottom: 15px"  id="show_article">
+    <div class="show_article">
+        <div id="show_article_head">
+            <div id="show_article_head_show">
+                <span id="show_article_head_cgyicon"></span>
+                <span id="show_article_head_cgyname"></span>
+                <div id="show_article_head_title"></div>
+            </div>
+        </div>
+        <div id="show_article_user"></div>
+        <div id="show_article_bottom">
+            <div id="show_article_content"></div>
+        </div>
+        <div id="show_article_comment">
+            <div id="show_article_addAndnum">
+                <div id="show_article_comnum">21条评论</div>
+                <div id="show_article_comimg"></div>
+                <div id="show_article_comtxt">
+                    <textarea name="content" id="show_article_comtxt_con" cols="30" rows="10" placeholder="我有意见"></textarea>
+                    <button id="show_article_comtxt_btn">评论</button>
+                </div>
+            </div>
+            <div id="show_article_show_commentAll">
+                <div id="show_article_show_comment">
+                    <div class="show_article_comimg"></div>
+                    <span class="show_user_name">用户昵称</span>
+                    <span class="show_user_time">时间发布</span>
+                    <div class="show_article_comtxt">这个是评论你日通房价开始打包北师大版</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="user_so"></div>
+</body>
+
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="../js/user_index.js"></script>
+
+<style>
+    body{
+        background-color: #eee;
+    }
+    #show_article{
+        width: 1190px;
+        margin: 0 auto;
+        position: relative;
+        background-color: white;
+    }
+    .show_article{
+        width: 1010px;
+        margin: 0 auto;
+        position: relative;
+    }
+    #show_article_head{
+        width: 1010px;
+        height: 500px;
+        position: inherit;
+        background-size: 1010px 500px;
+        background-repeat:no-repeat;
+        background-color: #FD482C;/* 删掉的 */
+    }
+    #show_article_head_show{
+        position: absolute;
+        left: 55px;
+        bottom: 20px;
+    }
+    #show_article_head_cgyicon{
+        width: 30px;
+        height: 30px;
+        background-color: #777777;
+        position: inherit;
+        top: -50px;
+    }
+    #show_article_head_cgyname{
+        width: 50px;
+        height: 30px;
+        font-size: 18px;
+        line-height: 30px;
+        color: white;
+        background-color: #777777;
+        position: inherit;
+        top: -50px;
+        left: 33px;
+    }
+    #show_article_head_title{
+        width: 900px;
+        border-top: white dashed 1px;
+        padding-top: 30px;
+        font-size: 36px;
+        color: white;
+    }
+    #show_article_user{
+        width: 1010px;
+        height: 50px;
+        margin: 10px auto;
+        background-color: #9F9F9F;
+        position: inherit;
+    }
+    #show_article_bottom{
+        width: 1010px;
+        position: inherit;
+    }
+    #show_article_content{
+        width: 1010px;
+        height: 500px;/* 删掉的 */
+        background-color: white;
+        background-color: #00F7DE;/* 删掉的 */
+    }
+    #show_article_comment{
+        width: 1010px;
+        height: 500px;
+        margin: 0 auto;
+        position: inherit;
+        top: 10px;
+        /*bottom: 20px;*/
+        background-color: #5FB878;/* 删掉的 */
+    }
+    #show_article_addAndnum{
+        width: 1010px;
+        height: 350px;
+        background-color: #9F9F9F;
+        position: inherit;
+    }
+    #show_article_comnum{
+        width: 900px;
+        height: 55px;
+        position: inherit;
+        top: 55px;
+        left: 55px;
+        font-size: 40px;
+    }
+    #show_article_comimg{
+        width: 64px;
+        height: 64px;
+        border-radius: 64px;
+        background-image: url("../images/user_face.png");
+        background-size: 64px 64px;
+        background-repeat:no-repeat;
+        position: inherit;
+        top: 105px;
+        left: 55px;
+        float: left;
+    }
+    #show_article_comtxt{
+        width: 800px;
+        position: inherit;
+        top: 105px;
+        left: -55px;
+        float: right;
+    }
+    #show_article_comtxt_con{
+        position: inherit;
+        padding: 10px;
+        max-height: 222px;
+        width: 780px;
+        height: 80px;
+        border: 1px solid #000;
+        color: #363636;
+        line-height: 28px;
+        font-size: 22px;
+    }
+    #show_article_comtxt_btn{
+        border: none;
+        width: 80px;
+        height: 40px;
+        margin-top: 10px;
+        background-color: #000;
+        color: #fff;
+        font-size: 25px;
+        line-height: 40px;
+        float: right;
+    }
+    #show_article_show_commentAll{
+        width: 900px;
+        margin-left: 55px;
+        border-top: black solid 1px;
+        position: inherit;
+        font-size: 40px;
+    }
+    #show_article_show_comment{
+        width: 900px;
+        position: inherit;
+    }
+    .show_article_comimg{
+        width: 64px;
+        height: 64px;
+        margin-top: 30px;
+        border-radius: 64px;
+        background-image: url("../images/user_face.png");
+        background-size: 64px 64px;
+        background-repeat:no-repeat;
+    }
+    .show_user_name{
+        position: inherit;
+        left: 64px;
+        top: -80px;
+        font-size: 24px;
+    }
+    .show_user_time{
+        position: inherit;
+        left: 64px;
+        top: -60px;
+        font-size: 24px;
+    }
+</style>
+<script type="text/javascript">
+    function txtComment() {
+        for (var i = 0; i < 4; i++) {
+            // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
+            lis.push("<li class='article'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
+        }
+    }
+</script>
+</html>

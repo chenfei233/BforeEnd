@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>管理员首页</title>
+    <title>管理员首页--文章查看</title>
     <link rel="icon" type="image/x-icon" href="../images/admin.png"/>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
     <script src="../js/jquery-3.3.1.min.js"></script>
@@ -71,6 +71,7 @@
                     <div id="show_article_head_title"></div>
                 </div>
             </div>
+            <div id="show_article_user"></div>
             <div id="show_article_bottom">
                 <div id="show_article_content"></div>
                 <div id="show_article_button">
@@ -96,6 +97,15 @@
 <script src="../js/isCookie.js"></script>
 </body>
 <style>
+    body{
+        background-color: #eee;
+    }
+    .layui-body{
+        width: 1190px;
+        background-color: white;
+        margin: 0 auto;
+        position: fixed;
+    }
     #show_article{
         width: 1010px;
         margin: 0 auto;
@@ -107,6 +117,7 @@
         position: absolute;
         background-size: 1010px 500px;
         background-repeat:no-repeat;
+        background-color: #FD482C;/* 删掉的 */
     }
     #show_article_head_show{
         position: inherit;
@@ -139,15 +150,24 @@
         color: white;
         /*background-color: #777777;*/
     }
+    #show_article_user{
+        width: 1010px;
+        height: 50px;
+        /*padding: 10px auto;*/
+        background-color: #1E9FFF;
+        position: absolute;
+        top: 520px;
+    }
     #show_article_bottom{
         width: 1010px;
         position: absolute;
-        top: 555px;
+        top: 575px;
     }
     #show_article_content{
         width: 1010px;
-        background-color: #00F7DE;
-        box-shadow: 2px 2px 0px #777777;
+        height: 500px;/* 删掉的 */
+        background-color: white;
+        /*box-shadow: 2px 2px 0px #777777;*/
     }
     #show_article_button{
         width: 1010px;
@@ -155,19 +175,34 @@
         margin: 20px auto;
         /*background-color: #1E9FFF;*/
     }
+    #button_ok{
+        float: left;
+        background-color: #1E9FFF;
+    }
+    #button_no{
+        float: right;
+        background-color: #FD482C;
+    }
     #button_ok,#button_no{
         border: none;
-        width: 503px;
+        width: 300px;
         height: 64px;
-        background-color: #666666;
+        /*background-color: #666666;*/
         color: white;
         font-size: 36px;
         line-height: 50px;
+        border-radius: 50px;
     }
+
 </style>
 <script>
+
     showArticle(185);
+
     function showArticle(aieid) {
+        //隐藏#show_table
+        //显示#show_article
+
         $.ajax({
             url:"http://localhost:8080/Bibased/Article/findByAieid", //处理登录页面的路径
             data:{
@@ -179,27 +214,38 @@
             success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
 
                 var str=$.parseJSON(data);
-                console.log(str.aietitle);
-                console.log(str.aieimg);
-                console.log(str.aiecontent);
-                console.log(str.cgyname);
-                console.log(str.cgyicon);
-                console.log(str.aietime);
-                var src = "../images/ok.png";
+                // console.log(str.aietitle);
+                // console.log(str.aieimg);
+                // console.log(str.aiecontent);
+                // console.log(str.cgyname);
+                // console.log(str.cgyicon);
+                // console.log(str.aietime);
                 $("#show_article_head").css("background-image","url(../images/upload/"+ str.aieimg +")");
                 $("#show_article_head_cgyicon").html("<img src='" + str.cgyicon + "' width='30' height='30'>");
                 $("#show_article_head_cgyname").text(str.cgyname);
                 $("#show_article_head_title").text(str.aietitle);
                 $("#show_article_content").html(str.aiecontent);
-
+                //发布人头像 昵称 时间
             },
             error:function (data) {
                 layer.open({
                     title: '警告',
-                    content: '删除失败！'
+                    content: '显示文章出错！'
                 });
             }
         });
     }
+
+    $("#button_ok").click(function(aieid){
+        alert("ok");
+        //隐藏#show_article
+        //显示#show_table
+    });
+
+    $("#button_no").click(function(aieid){
+        alert("no")
+        //隐藏#show_article
+        //显示#show_table
+    });
 </script>
 </html>

@@ -64,11 +64,23 @@
                 </div>
             </div>
             <div id="show_article_show_commentAll">
-                <div id="show_article_show_comment">
+                <div class="show_article_show_comment">
                     <div class="show_article_comimg"></div>
-                    <span class="show_user_name">用户昵称</span>
-                    <span class="show_user_time">时间发布</span>
-                    <div class="show_article_comtxt">这个是评论你日通房价开始打包北师大版</div>
+                    <div class="show_user_name">用户昵称</div>
+                    <div class="show_user_time">时间发布</div>
+                    <div class="show_article_comtxt">
+                        这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                    </div>
+                </div>
+                <div class="show_article_show_comment">
+                    <div class="show_article_comimg"></div>
+                    <div class="show_user_name">用户昵称</div>
+                    <div class="show_user_time">时间发布</div>
+                    <div class="show_article_comtxt">
+                        这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,23 +160,27 @@
     }
     #show_article_content{
         width: 1010px;
-        height: 500px;/* 删掉的 */
-        background-color: white;
-        background-color: #00F7DE;/* 删掉的 */
+        padding-bottom: 50px;
+        /*padding: inherit;*/
+        /*height: 500px;!* 删掉的 *!*/
+        /*background-color: white;*/
+        /*background-color: #00F7DE;!* 删掉的 *!*/
     }
     #show_article_comment{
         width: 1010px;
-        height: 500px;
-        margin: 0 auto;
+        /*height: 500px;*/
+        margin: 0px auto;
         position: inherit;
         top: 10px;
+        /*top: 80px;*/
+        background-color: #eee;
         /*bottom: 20px;*/
-        background-color: #5FB878;/* 删掉的 */
+        /*background-color: #5FB878;!* 删掉的 *!*/
     }
     #show_article_addAndnum{
         width: 1010px;
         height: 350px;
-        background-color: #9F9F9F;
+        /*background-color: #9F9F9F;*/
         position: inherit;
     }
     #show_article_comnum{
@@ -219,13 +235,14 @@
     #show_article_show_commentAll{
         width: 900px;
         margin-left: 55px;
-        border-top: black solid 1px;
         position: inherit;
         font-size: 40px;
     }
-    #show_article_show_comment{
+    .show_article_show_comment{
         width: 900px;
         position: inherit;
+        /*background-color: white;*/
+        border-top: #777777 solid 1px;
     }
     .show_article_comimg{
         width: 64px;
@@ -238,23 +255,72 @@
     }
     .show_user_name{
         position: inherit;
-        left: 64px;
-        top: -80px;
+        left: 80px;
+        top: -60px;
         font-size: 24px;
     }
     .show_user_time{
         position: inherit;
-        left: 64px;
+        left: 80px;
         top: -60px;
-        font-size: 24px;
+        font-size: 18px;
+        color: #777777;
+    }
+    .show_article_comtxt{
+        width: 800px;
+        position: inherit;
+        left: 100px;
+        top: -40px;
+        /*background-color: #01AAED;*/
+        line-height: 24px;
+        font-size: 18px;
     }
 </style>
 <script type="text/javascript">
     function txtComment() {
         for (var i = 0; i < 4; i++) {
             // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
-            lis.push("<li class='article'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
+            // lis.push("<li class='article'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
         }
+    }
+
+    showArticle(185);
+
+    function showArticle(aieid) {
+        //隐藏#show_table
+        //显示#show_article
+
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/findByAieid", //处理登录页面的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+
+                var str=$.parseJSON(data);
+                // console.log(str.aietitle);
+                // console.log(str.aieimg);
+                // console.log(str.aiecontent);
+                // console.log(str.cgyname);
+                // console.log(str.cgyicon);
+                // console.log(str.aietime);
+                $("#show_article_head").css("background-image","url(../images/upload/"+ str.aieimg +")");
+                $("#show_article_head_cgyicon").html("<img src='" + str.cgyicon + "' width='30' height='30'>");
+                $("#show_article_head_cgyname").text(str.cgyname);
+                $("#show_article_head_title").text(str.aietitle);
+                $("#show_article_content").html(str.aiecontent);
+                //发布人头像 昵称 时间
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '显示文章出错！'
+                });
+            }
+        });
     }
 </script>
 </html>

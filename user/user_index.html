@@ -77,7 +77,8 @@
             done: function (page, next) { //执行下一页的回调
                 //模拟数据插入
                 setTimeout(function () {
-                    console.log(page,next);
+                    console.log(page);
+                    console.log(next);
                     var lis = [];
                     for (var i = 0; i < 4; i++) {
                         // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')

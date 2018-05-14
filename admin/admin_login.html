@@ -277,18 +277,21 @@
                     dataType:"TEXT", //返回数据的类型
                     //TEXT字符串 JSON返回JSON XML返回XML
                     success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
-                        if(data){
+
+                        var str=$.parseJSON(data);
+
+                        if(str.data){
 
                             layer.open({
                                 title: '提醒',
-                                content: '登陆成功！'
+                                content: '登录成功！'
                             });
 
                             var str=$.parseJSON(data);
-                            setCookie("admid", str.admid, 1);
-                            setCookie("admname", str.admname, 1);
-                            setCookie("admicon", str.admicon, 1);
-                            setCookie("admnum", str.admnum, 1);
+                            setCookie("admid", str.data.admid, 1);
+                            setCookie("admname", str.data.admname, 1);
+                            setCookie("admicon", str.data.admicon, 1);
+                            setCookie("admnum", str.data.admnum, 1);
 
                             window.location.href = "admin_index.html";
 

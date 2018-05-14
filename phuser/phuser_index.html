@@ -20,7 +20,7 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item"><a href="javascript:void(0)" onclick="signOut()">退了</a></li>
         </ul>
     </div>
 
@@ -38,7 +38,7 @@
 
     <div class="layui-body">
 
-        <div class="show" id="show_table">
+        <div class="show" id="show_table"><!-- 显示表格 -->
             <table class="layui-hide" id="test" lay-filter="demo"></table>
             <script type="text/html" id="barDemo">
                 <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
@@ -47,7 +47,27 @@
             </script>
         </div>
 
-        <div style="padding: 15px;" id="add_article">
+        <div style="padding: 15px;"  id="show_article"><!-- 显示文章 -->
+            <div id="show_article_head">
+                <div id="show_article_head_show">
+                    <span id="show_article_head_cgyicon"></span>
+                    <span id="show_article_head_cgyname"></span>
+                    <div id="show_article_head_title"></div>
+                </div>
+            </div>
+            <div id="show_article_user"><!-- 用户信息显示 -->
+                <div id="show_article_user_info">
+                    <div id="show_article_user_info_img"></div>
+                    <div id="show_article_user_info_name">用户昵称</div>
+                    <div id="show_article_user_info_time">时间发布</div>
+                </div>
+            </div>
+            <div id="show_article_bottom">
+                <div id="show_article_content"></div>
+            </div>
+        </div>
+
+        <div style="padding: 15px;" id="add_article"><!-- 发布文章 -->
             <div class="write_bottom">
                 <select id="selType">
                     <!--类别信息-->
@@ -98,10 +118,110 @@
     #show_img{
         border: #666 dashed 1px;
     }
+    body{
+        background-color: #eee;
+    }
+    .layui-body{
+        width: 1190px;
+        background-color: white;
+        margin: 0 auto;
+        position: fixed;
+    }
+    #show_article{
+        width: 1010px;
+        margin: 0 auto;
+        position: relative;
+    }
+    #show_article_head{
+        width: 1010px;
+        height: 500px;
+        position: absolute;
+        background-size: 1010px 500px;
+        background-repeat:no-repeat;
+        background-color: #FD482C;/* 删掉的 */
+    }
+    #show_article_head_show{
+        position: inherit;
+        left: 55px;
+        bottom: 20px;
+    }
+    #show_article_head_cgyicon{
+        width: 30px;
+        height: 30px;
+        /*background-color: #777777;*/
+        position: inherit;
+        top: -50px;
+    }
+    #show_article_head_cgyname{
+        width: 50px;
+        height: 30px;
+        font-size: 18px;
+        line-height: 30px;
+        color: white;
+        /*background-color: #777777;*/
+        position: inherit;
+        top: -50px;
+        left: 33px;
+    }
+    #show_article_head_title{
+        width: 900px;
+        border-top: white dashed 1px;
+        padding-top: 30px;
+        font-size: 36px;
+        color: white;
+        /*background-color: #777777;*/
+    }
+    #show_article_user{
+        width: 1010px;
+        height: 50px;
+        margin: 10px auto 300px auto;
+        /*margin-bottom: 300px;*/
+        background-color: #9F9F9F;
+        position: absolute;
+        top: 520px;
+    }
+    #show_article_user_info_img{
+        width: 50px;
+        height: 50px;
+        /*background-color: #777777;*/
+        border-radius: 50px;
+        background-image: url("../images/user_face.png");
+        background-size: 50px 50px;
+        background-repeat:no-repeat;
+    }
+    #show_article_user_info_name{
+        width: 200px;
+        position: absolute;
+        top: 0px;
+        left: 60px;
+        /*background-color: white;*/
+        font-size: 20px;
+        overflow: hidden;
+    }
+    #show_article_user_info_time{
+        width: 200px;
+        position: absolute;
+        top: 30px;
+        left: 60px;
+        /*background-color: #01AAED;*/
+    }
+    #show_article_bottom{
+        width: 1010px;
+        position: absolute;
+        /*top: 575px;*/
+        top: 620px;
+    }
+    #show_article_content{
+        width: 1010px;
+        /*height: 500px;!* 删掉的 *!*/
+        background-color: white;
+        /*box-shadow: 2px 2px 0px #777777;*/
+    }
 </style>
 <script>
 
     $("#add_article").hide();// 隐藏写作div
+    $("#show_article").hide();// 隐藏文章div
 
     firstShow(); // 显示用户名头像和昵称
     findAllCategory(); // 显示所有类别
@@ -155,11 +275,8 @@
             //TEXT字符串 JSON返回JSON XML返回XML
             success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                 if(data){
-
                     var str=$.parseJSON(data);
-
                     // console.log(str.length);
-
                     for (var i=0; i<str.length; i++){
                         $("#selType").append("<option value='"+str[i].cgyid+"'>"+str[i].cgyname+"</option>");
                     }
@@ -186,6 +303,7 @@
         $("#show_table").show();// 显示表格div
 
         $("#add_article").hide();// 隐藏写作div
+        $("#show_article").hide();// 隐藏文章div
 
         var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=0';
 
@@ -211,7 +329,8 @@
                 var data = obj.data, //获得当前行数据
                     layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
-                    layer.msg('查看操作');
+                    // layer.msg('查看操作');
+                    showArticle(data.aieid);
                 } else if(layEvent === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构
@@ -220,7 +339,8 @@
                         deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
-                    layer.msg('编辑操作');
+                    // layer.msg('编辑操作');
+                    addArticleTxt(data.aieid);
                 }
             });
 
@@ -232,6 +352,7 @@
         $("#show_table").show();// 显示表格div
 
         $("#add_article").hide();// 隐藏写作div
+        $("#show_article").hide();// 隐藏文章div
 
         var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=-1';
 
@@ -257,7 +378,8 @@
                 var data = obj.data, //获得当前行数据
                     layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
-                    layer.msg('查看操作');
+                    // layer.msg('查看操作');
+                    showArticle(data.aieid);
                 } else if(layEvent === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构
@@ -265,7 +387,8 @@
                         deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
-                    layer.msg('编辑操作');
+                    // layer.msg('编辑操作');
+                    addArticleTxt(data.aieid);
                 }
             });
 
@@ -277,6 +400,7 @@
         $("#show_table").show();// 显示表格div
 
         $("#add_article").hide();// 隐藏写作div
+        $("#show_article").hide();// 隐藏文章div
 
         var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=1';
 
@@ -302,7 +426,8 @@
                 var data = obj.data, //获得当前行数据
                     layEvent = obj.event; //获得 lay-event 对应的值
                 if(layEvent === 'detail'){
-                    layer.msg('查看操作');
+                    // layer.msg('查看操作');
+                    showArticle(data.aieid);
                 } else if(layEvent === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构
@@ -311,7 +436,8 @@
                         deleteByAieid(data.aieid);
                     });
                 } else if(layEvent === 'edit'){
-                    layer.msg('编辑操作');
+                    // layer.msg('编辑操作');
+                    addArticleTxt(data.aieid);
                 }
             });
 
@@ -324,9 +450,18 @@
 
         $("#add_article").show();// 显示写作div
 
+        $("#show_article").hide();// 隐藏文章div
+
+        setCookie("aieid", "", 0);
+        $("#txtTitle").val("");
+        editor.txt.clear();
+
     }
 
-    function imgChange() { // 文件上传选中并显示
+    /**
+     * 文件上传选中并显示
+     **/
+    function imgChange() {
         var file =document.getElementById("fileup");
         var imgUrl =window.URL.createObjectURL(file.files[0]);
         // var img =document.getElementById('imghead');
@@ -335,7 +470,126 @@
     }
 
     $("#fabu_ok").click(function () {
+        var aieid=getCookie("aieid");
+        if(aieid){
+            releaseArticleHavaID(aieid);
+        }else {
+            releaseArticleNotID();
+        }
+    });
 
+    /**
+     * 删除文章
+     **/
+    function deleteByAieid(aieid) {
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/deleteByAieid", //后台删除文章的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                layer.open({
+                    title: '提醒',
+                    content: '删除成功！'
+                });
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '删除失败！'
+                });
+            }
+        });
+    }
+
+    /**
+     * 显示文章信息
+     **/
+    function showArticle(aieid) {
+
+        setCookie("aieid", aieid, 1);
+
+        //隐藏#show_table
+        $("#show_table").hide();
+        //显示#show_article
+        $("#show_article").show();
+
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/findByAieid", //后台查找文章的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+
+                var str=$.parseJSON(data);
+
+                $("#show_article_head").css("background-image","url(../images/upload/"+ str.aieimg +")");
+                $("#show_article_head_cgyicon").html("<img src='" + str.cgyicon + "' width='30' height='30'>");
+                $("#show_article_head_cgyname").text(str.cgyname);
+                $("#show_article_head_title").text(str.aietitle);
+                $("#show_article_content").html(str.aiecontent);
+                //发布人头像 昵称 时间
+                $("#show_article_user_info_img").html("<img src='" + str.phicon + "' width='50' height='50'>");
+                $("#show_article_user_info_name").text(str.phname);
+                $("#show_article_user_info_time").text(str.aietime);
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '显示文章出错！'
+                });
+            }
+        });
+    }
+
+    /**
+     * 设置文章内容
+     **/
+    function addArticleTxt(aieid) {
+
+        setCookie("aieid", aieid, 1);
+
+        $("#show_table").hide();// 隐藏表格div
+
+        $("#add_article").show();// 显示写作div
+
+        $("#show_article").hide();// 隐藏文章div
+
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/findByAieid", //后台查询文章的路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                var str=$.parseJSON(data);
+                $("#txtTitle").val("");
+                $("#txtTitle").val(str.aietitle);
+                editor.txt.html("");
+                editor.txt.html(str.aiecontent);
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '编辑文章出错！'
+                });
+            }
+        });
+    }
+
+    /**
+     * 编辑文章后，发布用这个
+     * @param aieid
+     */
+    function releaseArticleHavaID(aieid) {
         var formData = new FormData();
         formData.append("file", document.getElementById("fileup").files[0]);
         $.ajax({
@@ -354,7 +608,80 @@
                     var cgyid=$("#selType").val();//类别id
                     // console.log("123132132");
                     $.ajax({
-                        url:"http://localhost:8080/Bibased/Article/addArticle", //处理登录页面的路径
+                        url:"http://localhost:8080/Bibased/Article/addArticle", //后台添加文章的路径
+                        data:{
+                            aieid:aieid,
+                            aieimg:aieimg,
+                            aietitle:aietitle,
+                            aiecontent:aiecontent,
+                            phid:phid,
+                            cgyid:cgyid
+                        },//要提交的数据是一个JSON
+                        type:"POST", //提交方式
+                        dataType:"TEXT", //返回数据的类型
+                        //TEXT字符串 JSON返回JSON XML返回XML
+                        success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                            if(data){
+
+                                layer.open({
+                                    title: '提醒',
+                                    content: '发布成功！'
+                                });
+                                window.location.href = "phuser_index.html";
+
+                            }else{
+                                layer.open({
+                                    title: '警告',
+                                    content: '发布失败！'
+                                });
+                            }
+                        },
+                        error:function (data) {
+                            layer.open({
+                                title: '警告',
+                                content: '出错了！'
+                            });
+                        }
+                    });
+                }else{
+                    layer.open({
+                        title: '警告',
+                        content: '上传失败！'
+                    });
+                }
+            },
+            error: function () {
+                layer.open({
+                    title: '警告',
+                    content: '上传失败！'
+                });
+            }
+        });
+    }
+
+    /**
+     * 添加新的文章
+     */
+    function releaseArticleNotID() {
+        var formData = new FormData();
+        formData.append("file", document.getElementById("fileup").files[0]);
+        $.ajax({
+            url: "http://localhost:8080/Bibased/upload",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // console.log("路径："+data)
+                if(data){
+                    var aieimg=data;//首页图片路径
+                    var aietitle=$("#txtTitle").val();//文章标题
+                    var aiecontent=editor.txt.html();//文章内容
+                    var phid=getCookie("phid");//发布用户id
+                    var cgyid=$("#selType").val();//类别id
+                    // console.log("123132132");
+                    $.ajax({
+                        url:"http://localhost:8080/Bibased/Article/addArticle", //后台添加文章路径
                         data:{
                             aieimg:aieimg,
                             aietitle:aietitle,
@@ -402,31 +729,24 @@
                 });
             }
         });
-    });
-
-    function deleteByAieid(aieid) {//删除文章
-        $.ajax({
-            url:"http://localhost:8080/Bibased/Article/deleteByAieid", //处理登录页面的路径
-            data:{
-                aieid:aieid
-            },
-            type:"GET", //提交方式
-            dataType:"TEXT", //返回数据的类型
-            //TEXT字符串 JSON返回JSON XML返回XML
-            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
-                layer.open({
-                    title: '提醒',
-                    content: '删除成功！'
-                });
-            },
-            error:function (data) {
-                layer.open({
-                    title: '警告',
-                    content: '删除失败！'
-                });
-            }
-        });
     }
+
+    /**
+     * 退了
+     */
+    function signOut() {
+        setCookie("phid", "", 0);
+        setCookie("phnum", "", 0);
+        setCookie("phname", "", 0);
+        setCookie("phicon", "", 0);
+        setCookie("phemail", "", 0);
+        setCookie("phbrief", "", 0);
+        window.location.href = "phuser_login.html";
+    }
+
+
+    // setCookie("aieid", "", 0);
+    // getCookie("aieid");
 
 </script>
 </html>

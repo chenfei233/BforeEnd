@@ -43,18 +43,24 @@
 <!--文章详情展示-->
 <div style="padding-top: 75px;padding-bottom: 15px"  id="show_article">
     <div class="show_article">
-        <div id="show_article_head">
+        <div id="show_article_head"><!-- 首页图片显示 -->
             <div id="show_article_head_show">
                 <span id="show_article_head_cgyicon"></span>
                 <span id="show_article_head_cgyname"></span>
                 <div id="show_article_head_title"></div>
             </div>
         </div>
-        <div id="show_article_user"></div>
-        <div id="show_article_bottom">
+        <div id="show_article_user"><!-- 用户信息显示 -->
+            <div id="show_article_user_info">
+                <div id="show_article_user_info_img"></div>
+                <div id="show_article_user_info_name">用户昵称</div>
+                <div id="show_article_user_info_time">时间发布</div>
+            </div>
+        </div>
+        <div id="show_article_bottom"><!-- 文章信息显示 -->
             <div id="show_article_content"></div>
         </div>
-        <div id="show_article_comment">
+        <div id="show_article_comment"><!-- 评论模块显示 -->
             <div id="show_article_addAndnum">
                 <div id="show_article_comnum">21条评论</div>
                 <div id="show_article_comimg"></div>
@@ -65,20 +71,15 @@
             </div>
             <div id="show_article_show_commentAll">
                 <div class="show_article_show_comment">
-                    <div class="show_article_comimg"></div>
-                    <div class="show_user_name">用户昵称</div>
-                    <div class="show_user_time">时间发布</div>
-                    <div class="show_article_comtxt">
-                        这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
-                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                    <div class="show_article_comimg">
+                        <img src="../images/user_face.png" alt="" width="64" height="64">
                     </div>
-                </div>
-                <div class="show_article_show_comment">
-                    <div class="show_article_comimg"></div>
                     <div class="show_user_name">用户昵称</div>
                     <div class="show_user_time">时间发布</div>
                     <div class="show_article_comtxt">
                         这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
+                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
                         论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
                     </div>
                 </div>
@@ -93,6 +94,7 @@
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../layui/layui.js"></script>
 <script src="../js/user_index.js"></script>
+<script src="../js/isCookie.js"></script>
 
 <style>
     body{
@@ -147,13 +149,41 @@
         font-size: 36px;
         color: white;
     }
+
     #show_article_user{
         width: 1010px;
         height: 50px;
         margin: 10px auto;
+        margin-bottom: 30px;
         background-color: #9F9F9F;
         position: inherit;
     }
+    #show_article_user_info_img{
+        width: 50px;
+        height: 50px;
+        /*background-color: #777777;*/
+        border-radius: 50px;
+        background-image: url("../images/user_face.png");
+        background-size: 50px 50px;
+        background-repeat:no-repeat;
+    }
+    #show_article_user_info_name{
+        width: 200px;
+        position: absolute;
+        top: 0px;
+        left: 60px;
+        background-color: white;
+        font-size: 20px;
+        overflow: hidden;
+    }
+    #show_article_user_info_time{
+        width: 200px;
+        position: absolute;
+        top: 30px;
+        left: 60px;
+        background-color: #01AAED;
+    }
+
     #show_article_bottom{
         width: 1010px;
         position: inherit;
@@ -249,9 +279,9 @@
         height: 64px;
         margin-top: 30px;
         border-radius: 64px;
-        background-image: url("../images/user_face.png");
-        background-size: 64px 64px;
-        background-repeat:no-repeat;
+        /*background-image: url("../images/user_face.png");*/
+        /*background-size: 64px 64px;*/
+        /*background-repeat:no-repeat;*/
     }
     .show_user_name{
         position: inherit;
@@ -275,8 +305,17 @@
         line-height: 24px;
         font-size: 18px;
     }
+
 </style>
 <script type="text/javascript">
+
+    /**
+     *  layer全局化定义
+     * */
+    layui.use('layer', function () {
+        layer = layui.layer;
+    });
+
     function txtComment() {
         for (var i = 0; i < 4; i++) {
             // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
@@ -285,6 +324,7 @@
     }
 
     showArticle(185);
+    showComment();
 
     function showArticle(aieid) {
         //隐藏#show_table
@@ -301,18 +341,17 @@
             success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
 
                 var str=$.parseJSON(data);
-                // console.log(str.aietitle);
-                // console.log(str.aieimg);
-                // console.log(str.aiecontent);
-                // console.log(str.cgyname);
-                // console.log(str.cgyicon);
-                // console.log(str.aietime);
-                $("#show_article_head").css("background-image","url(../images/upload/"+ str.aieimg +")");
-                $("#show_article_head_cgyicon").html("<img src='" + str.cgyicon + "' width='30' height='30'>");
-                $("#show_article_head_cgyname").text(str.cgyname);
-                $("#show_article_head_title").text(str.aietitle);
-                $("#show_article_content").html(str.aiecontent);
-                //发布人头像 昵称 时间
+
+                $("#show_article_head").css("background-image","url(../images/upload/"+ str.aieimg +")");//文章首页图片
+                $("#show_article_head_cgyicon").html("<img src='" + str.cgyicon + "' width='30' height='30'>");//类别图标
+                $("#show_article_head_cgyname").text(str.cgyname);//类别名称
+                $("#show_article_head_title").text(str.aietitle);//文章标题
+                $("#show_article_content").html(str.aiecontent);//文章内容
+                $("#show_article_user_info_img").css("background-image","url("+ str.phicon +")");//发布人头像
+                $("#show_article_user_info_name").text(str.phname);//发布人昵称
+                $("#show_article_user_info_time").text(str.aietime);//发布时间
+
+                setCookie("aieid", str.aieid, 1);
             },
             error:function (data) {
                 layer.open({
@@ -322,5 +361,89 @@
             }
         });
     }
+
+    $("#show_article_comtxt_btn").click(function (){
+
+        // alert($("#show_article_comtxt_con").val())
+
+        var content=$("#show_article_comtxt_con").val();
+        var aieid=getCookie("aieid");
+        // var oyid=getCookie("oyid");
+        var oyid=11;
+
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Commentary/addOrUpdata", //添加评论的后台路径
+            data:{
+                oyid:oyid,
+                aieid:aieid,
+                cmtcontent:content
+            },
+            type:"POST", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                layer.open({
+                    title: '提醒',
+                    content: '添加评论成功！'
+                });
+                // $("#show_article_comtxt_con").val("");
+                // showComment();
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '添加评论出错！'
+                });
+            }
+        });
+    });
+
+    /**
+     * 显示评论
+     */
+    function showComment() {
+
+        $("#show_article_show_commentAll").html("");
+        var aieid=getCookie("aieid");
+
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Commentary/findByAieid", //添加评论的后台路径
+            data:{
+                aieid:aieid
+            },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                var str=$.parseJSON(data);
+                console.log(str.data.length)
+                for(var i=0;i<str.data.length;i++){
+                    showUserComment(str.data[i]);
+                }
+            },
+            error:function (data) {
+                layer.open({
+                    title: '警告',
+                    content: '显示评论出错！'
+                });
+            }
+        });
+    }
+
+    /**
+     * 显示评论
+     */
+    function showUserComment(data) {
+        $("#show_article_show_commentAll").append(
+            "<div class='show_article_show_comment'>" +
+                "<div class='show_article_comimg'>\n" +
+                    "<img src=" + data.oyicon + " alt='' width='64' height='64'>" +
+                "</div>" +
+                "<div class='show_user_name'>" + data.oyname + "</div>" +
+                "<div class='show_user_time'>" + data.cmttime + "</div>" +
+                "<div class='show_article_comtxt'>" + data.cmtcontent +"</div>" +
+            "</div>")
+    }
+
 </script>
 </html>

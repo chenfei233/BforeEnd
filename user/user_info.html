@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>每日一报</title>
+    <link rel="icon" type="image/x-icon" href="../images/earth.png"/>
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/user_index.css" />
+</head>
+<body>
+<!--首页头部-->
+<div class="index_header">
+    <div class="header_left">
+        <div class="header_left_icon">
+            <img src="../images/r_white.png" alt="每日一报" width="56" height="56">
+        </div>
+        <span class="header_left_title" id="header_left_title">每日一报新闻</span>
+    </div>
+    <div class="header_center">
+        <ul id="cate">
+            <li class="cate"><span class="en">商业</span></li>
+            <li class="cate"><span class="en">智能</span></li>
+            <li class="cate"><span class="en">设计</span></li>
+            <li class="cate"><span class="en">时尚</span></li>
+            <li class="cate"><span id="btn_fabu">娱乐</span></li>
+            <li class="cate"><span>城市</span></li>
+            <li class="cate"><span>游戏</span></li>
+        </ul>
+    </div>
+    <div class="header_right">
+        <span class="header_right_app">APP</span>
+        <span class="header_right_so">
+            <img src="../images/star.png" alt="" width="18" height="18" class="user_so">
+        </span>
+        <div class="user_msg">
+            <img class="user_img" src="../images/upload/user_face.png" alt="" width="36" height="36">
+            <span class="user_name">特使的同户名安卡</span>
+            <span class="user_logout">退出</span>
+        </div>
+        <span class="header_right_about">关于我们</span>
+    </div>
+</div>
+<div class="content">
+    <div class="content_img"></div>
+    <div id="content_usericon"></div>
+    <div id="content_username">V笑掩盖忧伤</div>
+    <div class="content_mulu">
+        <div class="content_left" onclick="showInfo()">
+            <span>账号设置</span>
+            <div id="content_left_o"></div>
+        </div>
+        <div class="content_right" onclick="showPswd()">
+            <span>密码设置</span>
+            <div id="content_right_o"></div>
+        </div>
+    </div>
+</div>
+<div id="set_up_info">
+    <div class="set_up_info_one">
+        <span class="set_up_info_xiugai">修改头像</span>
+        <div id="show_img">
+            <img src="../images/upload/user_face.png" alt="" width="60" height="60">
+        </div>
+        <div class="show_img">
+            <span class="file-box">
+                更改头像
+                <input type="file" class="file-btn" id="fileup" onchange="imgChange()" />
+            </span>
+        </div>
+    </div>
+    <div class="set_up_info_two">
+        <div class="set_up_info_two_name">
+            <span>昵称</span>
+            <input type="text" placeholder="昵称" id="user_name">
+        </div>
+        <div class="set_up_info_two_email">
+            <span>邮箱</span>
+            <input type="text" placeholder="邮箱" id="user_email">
+            <span id="user_email_ts"></span>
+        </div>
+    </div>
+    <div class="set_up_info_three">
+        <div class="set_up_info_three_cont">
+            <span class="set_up_info_three_jj">简介</span>
+            <textarea name="" id="user_jj" cols="70" rows="3" placeholder="一句话介绍自己" style="margin-left: 105px"></textarea>
+        </div>
+    </div>
+    <div class="set_up_info_four">
+        <div id="user_save" onclick="userSave()">保存</div>
+    </div>
+</div>
+<div id="set_up_pswd">
+    <div class="set_up_pswd">
+        <input type="text" placeholder="请输入原密码" id="set_up_pswd_old">
+    </div>
+    <div class="set_up_pswd">
+        <input type="text" placeholder="请设置新密码" id="set_up_pswd_one">
+    </div>
+    <div class="set_up_pswd">
+        <input type="text" placeholder="确认新密码" id="set_up_pswd_two">
+        <span id="set_up_pswd_ts"></span>
+    </div>
+    <div class="set_up_pswd_btn">
+        <div id="user_save_pswd" onclick="userPswd()">确认修改</div>
+    </div>
+</div>
+</body>
+
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="../js/user_index.js"></script>
+<script src="../js/isCookie.js"></script>
+
+<style>
+    body{
+        background-color: #eee;
+    }
+    .content{
+        width: 1010px;
+        height: 485px;
+        background-color: white;
+        margin: 0 auto;
+        margin-top: 80px;
+        position: relative;
+    }
+    .content_img{
+        width: 1010px;
+        height: 400px;
+        background-image: url("../images/dwertfgjk.jpg");
+        background-size: 1010px 400px;
+        background-repeat:no-repeat;
+        opacity:0.6;
+    }
+    #content_usericon{
+        width: 80px;
+        height: 80px;
+        background-color: #777777;
+        position: absolute;
+        top: 140px;
+        left: 465px;
+        border-radius: 40px;
+        overflow: hidden;
+    }
+    #content_username{
+        width: 200px;
+        height: 40px;
+        background-color: #ffc81f;
+        margin: 0 auto;
+        position: relative;
+        top: -20px;
+        font-size: 20px;
+        line-height: 40px;
+        text-align: center;
+        font-weight:bold;
+        overflow: hidden;
+    }
+    .content_mulu{
+        width: 1010px;
+        height: 45px;
+        /*background-color: #eb7350;*/
+    }
+    .content_left{
+        margin-left: 380px;
+    }
+    .content_right{
+        margin-left: 50px;
+    }
+    .content_left , .content_right{
+        width: 100px;
+        height: 40px;
+        font-size: 20px;
+        line-height: 40px;
+        text-align: center;
+        font-weight:bold;
+        /*background-color: #777777;*/
+        float: left;
+    }
+    #content_left_o , #content_right_o{
+        width: 100px;
+        height: 5px;
+        background-color: #ffc81f;
+        float: left;
+    }
+
+    #set_up_info,#set_up_pswd{
+        width: 1010px;
+        height: 350px;
+        margin: 30px auto;
+        font-size: 22px;
+        background-color: white;
+    }
+
+    .file-box{
+        display: inline-block;
+        position: relative;
+        padding: 3px 5px;
+        overflow: hidden;
+        color:#fff;
+        background-color: #ffc81f;
+    }
+    .file-btn{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        outline: none;
+        background-color: transparent;
+        filter:alpha(opacity=0);
+        -moz-opacity:0;
+        -khtml-opacity: 0;
+        opacity: 0;
+    }
+
+    .set_up_info_xiugai{
+        margin-left: 50px;
+        margin-top: 40px;
+        float: left;
+    }
+    #show_img{
+        margin-top: 25px;
+        margin-left: 15px;
+        float: left;
+        border-radius: 30px;
+        overflow: hidden;
+    }
+    .show_img{
+        float: left;
+        position: relative;
+        top: 40px;
+        left: 30px;
+    }
+
+    input {
+        width: 320px;
+        height: 30px;
+        margin-left: 10px;
+    }
+    .set_up_info_two{
+        width: 100%;
+        height: 50px;
+        /*background-color: #666666;*/
+        float: left;
+        margin-top: 25px;
+    }
+    .set_up_info_two_name{
+        margin-left: 95px;
+        float: left;
+        line-height: 50px;
+    }
+    .set_up_info_two_email{
+        margin-left: 80px;
+        float: left;
+        line-height: 50px;
+    }
+
+    .set_up_info_three{
+        width: 100%;
+        height: 80px;
+        /*background-color: #00F7DE;*/
+        float: left;
+        margin-top: 20px;
+    }
+    .set_up_info_three_jj{
+        position: relative;
+        top: -50px;
+        left: 95px;
+        margin-top: -50px;
+        /*background-color: #01AAED;*/
+    }
+
+    .set_up_info_four{
+        width: 150px;
+        height: 40px;
+        background-color: #ffc81f;
+        float: left;
+        margin-top: 25px;
+        margin-left: 430px;
+    }
+    #user_save{
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        line-height: 40px;
+    }
+
+    .set_up_pswd{
+        width: 500px;
+        margin-left: 340px;
+    }
+    #set_up_pswd_old{
+        height: 35px;
+        margin-top: 45px;
+    }
+    #set_up_pswd_one,#set_up_pswd_two{
+        height: 35px;
+        margin-top: 35px;
+    }
+    .set_up_pswd_btn{
+        width: 150px;
+        height: 40px;
+        background-color: #ffc81f;
+        float: left;
+        margin-top: 53px;
+        margin-left: 430px;
+    }
+    #user_save_pswd{
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        line-height: 40px;
+    }
+
+</style>
+<script type="text/javascript">
+
+    var layer; // layer全局定义
+    var email=false;//邮箱正则校验标志
+    var pswd=false;//两次密码输入校验
+
+    $("#set_up_pswd").hide();
+    $("#content_right_o").hide();
+    $("#content_username").html(getCookie("oyname"));
+    // $("#content_usericon").html("<img src='../images/upload/0011.jpg' width='80' height='80'>");
+    $("#content_usericon").html("<img src='../images/upload/" + getCookie("oyicon") + "' width='80' height='80'>");
+    $("#show_img").html("<img src='../images/upload/" + getCookie("oyicon") + "' width='60' height='60'>");
+    $("#user_name").val(getCookie("oyname"));
+    $("#user_email").val(getCookie("oyemail"));
+    $("#user_jj").val(getCookie("oybrief"));
+
+    /**
+     *  layer全局化定义
+     * */
+    layui.use('layer', function () {
+        layer = layui.layer;
+    });
+
+    function showInfo(){
+        $("#set_up_pswd").hide();
+        $("#content_right_o").hide();
+        $("#set_up_info").show();
+        $("#content_left_o").show();
+    }
+
+    function showPswd() {
+        $("#set_up_info").hide();
+        $("#content_left_o").hide();
+        $("#set_up_pswd").show();
+        $("#content_right_o").show();
+    }
+
+    /**
+     * 修改头像（修改成功，还需要更新cookie,刷新页面）
+     */
+    function imgChange() {
+
+        // setCookie("oyid",64,1)
+
+        var file =document.getElementById("fileup");
+        var imgUrl =window.URL.createObjectURL(file.files[0]);
+        // var img =document.getElementById('imghead');
+        $("#show_img").html("<img src='"+imgUrl+"' width='60' height='60'>");
+        // console.log(imgUrl)
+
+        var formData = new FormData();
+        formData.append("file", document.getElementById("fileup").files[0]);
+        $.ajax({
+            url: "http://localhost:8080/Bibased/upload",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // console.log("路径："+data)
+                if(data){
+                    var oyicon=data;//头像路径
+                    var oyid=getCookie("oyid");//普通用户id
+                    $.ajax({
+                        url:"http://localhost:8080/Bibased/Oyuser/updataOyuserIcon", //普通用户更新个人头像信息
+                        data:{
+                            oyid:oyid,
+                            oyicon:oyicon
+                        },//要提交的数据是一个JSON
+                        type:"POST", //提交方式
+                        dataType:"TEXT", //返回数据的类型
+                        //TEXT字符串 JSON返回JSON XML返回XML
+                        success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                            var str=$.parseJSON(data);
+                            // console.log(str)
+                            //修改成功，更新cookie
+                            //刷新页面
+                        },
+                        error:function (data) {
+                            layer.open({
+                                title: '警告',
+                                content: '修改出错了！'
+                            });
+                        }
+                    });
+                }else{
+                    layer.open({
+                        title: '警告',
+                        content: '上传失败！'
+                    });
+                }
+            },
+            error: function () {
+                layer.open({
+                    title: '警告',
+                    content: '上传失败！'
+                });
+            }
+        });
+    }
+
+    /**
+     *  校验邮箱正则
+     * */
+    $("#user_email").on('input propertychange', function () {
+        var mailTxt = $("#user_email").val();//获取输入的邮箱
+        var szReg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; //邮箱正则
+        var bChk=szReg.test(mailTxt);
+        // alert(bChk.valueOf());
+        if(bChk){
+            email=true;
+            $("#user_email_ts").html("<b style='color: green;font-size: 14px'>对！</b>");
+        }else{
+            email=false;
+            $("#user_email_ts").html("<b style='color: red;font-size: 14px'>错！</b>");
+        }
+        console.log("email"+email)
+    });
+
+    /**
+     * 修改信息（修改成功，还需要更新cookie,刷新页面）
+     */
+    function userSave() {
+
+        // setCookie("oyid",64,1)
+
+        var oyid=getCookie("oyid");//普通用户id
+        var oyname=$("#user_name").val();//昵称
+        var oyemail=$("#user_email").val();//邮箱
+        var oybrief=$("#user_jj").val();//简介
+        if(email){
+            $.ajax({
+                url:"http://localhost:8080/Bibased/Oyuser/updataOyuserInfo", //普通用户更新个人信息(昵称、简介、邮箱)
+                data:{
+                    oyid:oyid,
+                    oyname:oyname,
+                    oyemail:oyemail,
+                    oybrief:oybrief
+                },//要提交的数据是一个JSON
+                type:"POST", //提交方式
+                dataType:"TEXT", //返回数据的类型
+                //TEXT字符串 JSON返回JSON XML返回XML
+                success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                    var str=$.parseJSON(data);
+                    // console.log(str)
+                    //修改成功，更新cookie
+                },
+                error:function (data) {
+                    layer.open({
+                        title: '警告',
+                        content: '修改出错了！'
+                    });
+                }
+            });
+        }else{
+            layer.open({
+                title: '警告',
+                content: '内容请填写正确！'
+            });
+        }
+    }
+
+
+    /**
+     *  校验两次密码输入是否一致
+     * */
+    $("#set_up_pswd_two").on('input propertychange', function () {
+        var oypswdo=$("#set_up_pswd_one").val();//第一次密码
+        var oypswdt=$("#set_up_pswd_two").val();//第二次密码
+        if(oypswdo != oypswdt){
+            pswd=false;
+            $("#set_up_pswd_ts").html("<b style='color: red;font-size: 14px'>两次密码输入不一致！</b>");
+        }else{
+            pswd=true;
+            $("#set_up_pswd_ts").html("<b style='color: green;font-size: 14px'>密码输入一致！</b>");
+        }
+        console.log("pswd"+pswd)
+    });
+
+    /**
+     * 修改密码
+     */
+    function userPswd() {
+        // setCookie("oyid",64,1)
+
+        var oyid=getCookie("oyid");//普通用户id
+        var oldOypswd=$("#set_up_pswd_old").val();//旧密码
+        var newOypswd=$("#set_up_pswd_one").val();//第一次密码
+
+        if(pswd){
+            $.ajax({
+                url:"http://localhost:8080/Bibased/Oyuser/findByOyidAndAndOypswd", //根据id、密码查询
+                data:{
+                    oyid:oyid,
+                    oypswd:oldOypswd
+                },//要提交的数据是一个JSON
+                type:"POST", //提交方式
+                dataType:"TEXT", //返回数据的类型
+                //TEXT字符串 JSON返回JSON XML返回XML
+                success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                    console.log(data)
+                    if(data)
+                        $.ajax({
+                            url:"http://localhost:8080/Bibased/Oyuser/updataOyuserPswd", //普通用户更新个人密码信息
+                            data:{
+                                oyid:oyid,
+                                oypswd:newOypswd
+                            },//要提交的数据是一个JSON
+                            type:"POST", //提交方式
+                            dataType:"TEXT", //返回数据的类型
+                            //TEXT字符串 JSON返回JSON XML返回XML
+                            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                                layer.open({
+                                    title: '提醒',
+                                    content: '密码修改成功！'
+                                });
+                            },
+                            error:function (data) {
+                                layer.open({
+                                    title: '警告',
+                                    content: '密码修改出错了！'
+                                });
+                            }
+                        });
+                    else{
+                        layer.open({
+                            title: '警告',
+                            content: '旧密码输入错误！'
+                        });
+                    }
+                },
+                error:function (data) {
+                    layer.open({
+                        title: '警告',
+                        content: '修改出错了！'
+                    });
+                }
+            });
+        }else{
+            layer.open({
+                title: '警告',
+                content: '两次密码输入不一直！'
+            });
+        }
+    }
+
+</script>
+</html>

@@ -28,7 +28,21 @@
             <li class="layui-nav-item"><a href="javascript:void(0)" onclick="signOut()">退了</a></li>
         </ul>
     </div>
-
+    <div class="content">
+        <div class="content_img"></div>
+        <div id="content_usericon"></div>
+        <div id="content_username">V笑掩盖忧伤</div>
+        <div class="content_mulu">
+            <div class="content_left">
+                <span>账号设置</span>
+                <div id="content_left_o"></div>
+            </div>
+            <div class="content_right">
+                <span>密码设置</span>
+                <div id="content_right_o"></div>
+            </div>
+        </div>
+    </div>
 
     <div class="layui-footer" id="layui-footer">
         <!-- 底部固定区域 -->
@@ -40,12 +54,82 @@
 <script src="../js/isCookie.js"></script>
 </body>
 <style>
-#layui-footer{
-    position: absolute;
-    left: 0;
-}
+    body{
+        background-color: #eee;
+    }
+    #layui-footer{
+        position: absolute;
+        left: 0;
+    }
+    .content{
+        width: 1010px;
+        height: 485px;
+        background-color: white;
+        margin: 0 auto;
+        margin-top: 30px;
+        position: relative;
+    }
+    .content_img{
+        width: 1010px;
+        height: 400px;
+        background-image: url("../images/dwertfgjk.jpg");
+        background-size: 1010px 400px;
+        background-repeat:no-repeat;
+        opacity:0.6;
+    }
+    #content_usericon{
+        width: 80px;
+        height: 80px;
+        background-color: #777777;
+        position: absolute;
+        top: 140px;
+        left: 465px;
+        border-radius: 40px;
+    }
+    #content_username{
+        width: 200px;
+        height: 40px;
+        background-color: #ffc81f;
+        margin: 0 auto;
+        position: relative;
+        top: -20px;
+        font-size: 20px;
+        line-height: 40px;
+        text-align: center;
+        font-weight:bold;
+        overflow: hidden;
+    }
+    .content_mulu{
+        width: 1010px;
+        height: 45px;
+        /*background-color: #eb7350;*/
+    }
+    .content_left{
+        margin-left: 380px;
+    }
+    .content_right{
+        margin-left: 50px;
+    }
+    .content_left , .content_right{
+        width: 100px;
+        height: 40px;
+        font-size: 20px;
+        line-height: 40px;
+        text-align: center;
+        font-weight:bold;
+        /*background-color: #777777;*/
+        float: left;
+    }
+    #content_left_o , #content_right_o{
+        width: 100px;
+        height: 5px;
+        background-color: #ffc81f;
+        float: left;
+    }
 </style>
 <script>
+
+    $("#content_right_o").hide();
 
     firstShow();
 

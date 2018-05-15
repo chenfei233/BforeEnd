@@ -69,20 +69,20 @@
                     <button id="show_article_comtxt_btn">评论</button>
                 </div>
             </div>
-            <div id="show_article_show_commentAll">
-                <div class="show_article_show_comment">
-                    <div class="show_article_comimg">
-                        <img src="../images/user_face.png" alt="" width="64" height="64">
-                    </div>
-                    <div class="show_user_name">用户昵称</div>
-                    <div class="show_user_time">时间发布</div>
-                    <div class="show_article_comtxt">
-                        这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
-                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
-                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
-                        论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版
-                    </div>
-                </div>
+            <div id="show_article_show_commentAll"><!-- 显示评论详情 -->
+                <!--<div class="show_article_show_comment">-->
+                    <!--<div class="show_article_comimg">-->
+                        <!--<img src="../images/user_face.png" alt="" width="64" height="64">-->
+                    <!--</div>-->
+                    <!--<div class="show_user_name">用户昵称</div>-->
+                    <!--<div class="show_user_time">时间发布</div>-->
+                    <!--<div class="show_article_comtxt">-->
+                        <!--这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版-->
+                        <!--论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版-->
+                        <!--论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版-->
+                        <!--论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版这个是评论你日通房价开始打包北师大版-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
     #show_article_head_cgyicon{
         width: 30px;
         height: 30px;
-        background-color: #777777;
+        /*background-color: #777777;*/
         position: inherit;
         top: -50px;
     }
@@ -137,7 +137,7 @@
         font-size: 18px;
         line-height: 30px;
         color: white;
-        background-color: #777777;
+        /*background-color: #777777;*/
         position: inherit;
         top: -50px;
         left: 33px;
@@ -172,7 +172,7 @@
         position: absolute;
         top: 0px;
         left: 60px;
-        background-color: white;
+        /*background-color: white;*/
         font-size: 20px;
         overflow: hidden;
     }
@@ -181,7 +181,7 @@
         position: absolute;
         top: 30px;
         left: 60px;
-        background-color: #01AAED;
+        /*background-color: #01AAED;*/
     }
 
     #show_article_bottom{
@@ -323,12 +323,13 @@
         }
     }
 
-    showArticle(185);
+    showArticle();
     showComment();
 
     function showArticle(aieid) {
         //隐藏#show_table
         //显示#show_article
+        var aieid=getCookie("aieid");
 
         $.ajax({
             url:"http://localhost:8080/Bibased/Article/findByAieid", //处理登录页面的路径
@@ -368,34 +369,40 @@
 
         var content=$("#show_article_comtxt_con").val();
         var aieid=getCookie("aieid");
-        // var oyid=getCookie("oyid");
-        var oyid=11;
-
-        $.ajax({
-            url:"http://localhost:8080/Bibased/Commentary/addOrUpdata", //添加评论的后台路径
-            data:{
-                oyid:oyid,
-                aieid:aieid,
-                cmtcontent:content
-            },
-            type:"POST", //提交方式
-            dataType:"TEXT", //返回数据的类型
-            //TEXT字符串 JSON返回JSON XML返回XML
-            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
-                layer.open({
-                    title: '提醒',
-                    content: '添加评论成功！'
-                });
-                // $("#show_article_comtxt_con").val("");
-                // showComment();
-            },
-            error:function (data) {
-                layer.open({
-                    title: '警告',
-                    content: '添加评论出错！'
-                });
-            }
-        });
+        var oyid=getCookie("oyid");
+        // var oyid=64;
+        if(oyid){
+            $.ajax({
+                url:"http://localhost:8080/Bibased/Commentary/addOrUpdata", //添加评论的后台路径
+                data:{
+                    oyid:oyid,
+                    aieid:aieid,
+                    cmtcontent:content
+                },
+                type:"POST", //提交方式
+                dataType:"TEXT", //返回数据的类型
+                //TEXT字符串 JSON返回JSON XML返回XML
+                success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                    layer.open({
+                        title: '提醒',
+                        content: '添加评论成功！'
+                    });
+                    // $("#show_article_comtxt_con").val("");
+                    // showComment();
+                },
+                error:function (data) {
+                    layer.open({
+                        title: '警告',
+                        content: '添加评论出错！'
+                    });
+                }
+            });
+        }else{
+            layer.open({
+                title: '警告',
+                content: '未登录，请先登录！'
+            });
+        }
     });
 
     /**
@@ -404,10 +411,11 @@
     function showComment() {
 
         $("#show_article_show_commentAll").html("");
+
         var aieid=getCookie("aieid");
 
         $.ajax({
-            url:"http://localhost:8080/Bibased/Commentary/findByAieid", //添加评论的后台路径
+            url:"http://localhost:8080/Bibased/Commentary/findByAieid", //显示该文章评论详情的后台路径
             data:{
                 aieid:aieid
             },
@@ -416,6 +424,7 @@
             //TEXT字符串 JSON返回JSON XML返回XML
             success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                 var str=$.parseJSON(data);
+                $("#show_article_comnum").html(str.count+"条评论");
                 console.log(str.data.length)
                 for(var i=0;i<str.data.length;i++){
                     showUserComment(str.data[i]);
@@ -431,7 +440,7 @@
     }
 
     /**
-     * 显示评论
+     * 显示评论详情
      */
     function showUserComment(data) {
         $("#show_article_show_commentAll").append(

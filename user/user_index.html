@@ -42,7 +42,39 @@
 </div>
 <!--文章展示列表-->
 <div class="index_content">
-    <ul class="flow-default" id="LAY_demo1"></ul>
+    <ul class="flow-default" id="LAY_demo1">
+        <!--<li class="article" onclick="addCookie(50)">-->
+            <!--<div class="index_img">-->
+                <!--<img src="../images/09314147.jpg" alt="测试" width="245" height="185">-->
+            <!--</div>-->
+            <!--<p class="category">-->
+                <!--<span class="category_icon">-->
+                    <!--<img src="../images/classify/fashion.png" alt="" width="22" height="22">-->
+                <!--</span>-->
+                <!--<span class="category_name">时尚</span>-->
+            <!--</p>-->
+            <!--<div class="index_title">-->
+                <!--降温费农家妇女奥帆是否健康按时收费女奥帆是否健康按时收费女奥帆是否健康按时收费那圣诞节开发阿是-->
+                <!--否能爱空间撒地方降温费农家妇女奥帆是否健康按时收费女奥帆是否健康按时收费女奥帆是否健康按时收费那圣诞节开发阿是-->
+                <!--否能爱空间撒地方-->
+            <!--</div>-->
+            <!--<div class="index_last">-->
+                <!--<div class="last_news">-->
+                    <!--<span class="news_icn">-->
+                        <!--<img src="../images/news.png" alt="" width="18" height="18">-->
+                    <!--</span>-->
+                    <!--<span class="news_num">88</span>-->
+                <!--</div>-->
+
+                <!--<div class="last_colle">-->
+                    <!--<span class="colle_icn">-->
+                        <!--<img src="../images/colle.png" alt="" width="18" height="18">-->
+                    <!--</span>-->
+                    <!--<span class="colle_num">13</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</li>-->
+    </ul>
 </div>
 
 <div id="user_so"></div>
@@ -51,6 +83,7 @@
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../layui/layui.js"></script>
 <script src="../js/user_index.js"></script>
+<script src="../js/isCookie.js"></script>
 
 <style>
     .article{
@@ -59,9 +92,73 @@
         margin: 5px 5px;
         background-color: #66ccff;
         float: left;
+        position: inherit;
+    }
+    .index_img{
+        width: 245px;
+        height: 185px;
+        background-color: #00F7DE;
+        overflow: hidden;
+    }
+    .index_img img{
+        cursor: pointer;   /*让鼠标显示小手*/
+        transition:1.5s;   /*过渡时间(缓慢放大时间)*/
+    }
+    .index_img img:hover{
+        transform: scale(1.1);   /*放大*/
+    }
+    .category{
+        position: relative;
+        top: -175px;
+        left: 15px;
+        /*background-color: #00F7DE;*/
+    }
+    .category_name{
+        /*margin-top: 15px;*/
+        font-size: 12px;
+        color: white;
+        line-height: 22px;
+    }
+    .index_title{
+        position: relative;
+        top: -22px;
+        left: 0px;
+        width: 225px;
+        height: 44px;
+        margin: 10px;
+        font-size: 16px;
+        overflow: hidden;
+    }
+    .index_last{
+        /*width: 220px;*/
+        height: 33px;
+        /*background-color: white;*/
+        position: relative;
+        top: -24px;
+        left: 0px;
+    }
+    .last_cont{
+        width: 225px;
+        height: 20px;
+        background-color: #777777;
+        margin: 0px auto;
+    }
+    .last_news{
+        float: left;
+        margin-left: 15px;
+    }
+    .last_colle{
+        float: right;
+        margin-right: 15px;
     }
 </style>
 <script type="text/javascript">
+
+    var num=0;
+    var aieList="";
+
+    showIndexArticle();
+
     $("#btn_fabu").click(function (){
         alert(this.val())
     });
@@ -77,13 +174,82 @@
             done: function (page, next) { //执行下一页的回调
                 //模拟数据插入
                 setTimeout(function () {
-                    console.log(page);
-                    console.log(next);
+                    // console.log(page);
+                    // console.log(next);
                     var lis = [];
-                    for (var i = 0; i < 4; i++) {
-                        // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
-                        lis.push("<li class='article'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
+                    // for (var i = 1; i < 4; i++) {
+                    //     for (var j = 1; j < 5; j++) {
+                    //         lis.push('<li>' + (((page - 1) * 12) + i * j)  + '</li>')
+                    //     }
+                    // }
+                    for (var i = 1; i < 4; i++) {
+                        for (var j = 1; j < 5; j++) {
+
+                            var count=(((page - 1) * 12) + i * j)-1
+
+                            if(count <aieList.length) {
+                                lis.push(
+                                    "<li class='article' onclick='addCookie(" + aieList[count].aieid + ")'>" +
+                                    "<div class='index_img'>" +
+                                    "<img src='../images/upload/" + aieList[count].aieimg + "' width='245' height='185'>" +
+                                    "</div>" +
+                                    "<p class='category'>" +
+                                    "<span class='category_icon'>" +
+                                    "<img src='" + aieList[count].cgyicon + "' width='22' height='22'>" +
+                                    "</span>" +
+                                    "<span class='category_name'>" + aieList[count].cgyname + "</span>" +
+                                    "</p>" +
+                                    "<div class='index_title'>" + aieList[count].aietitle + "</div>" +
+                                    "<div class='index_last'>" +
+                                    "<div class='last_news'>" +
+                                    "<span class='news_icn'>" +
+                                    "<img src='../images/news.png' width='18' height='18'>" +
+                                    "</span>" +
+                                    "<span class='news_num'>" + aieList[count].cmtnum + "</span>" +
+                                    "</div>" +
+                                    "<div class='last_colle'>" +
+                                    "<span class='colle_icn'>" +
+                                    "<img src='../images/colle.png' width='18' height='18'>" +
+                                    "</span>" +
+                                    "<span class='colle_num'>" + aieList[count].cltnum + "</span>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "</li>");
+                            }
+
+                        }
                     }
+                    // for (var i = 0; i < 4; i++) {
+                        // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
+                        // lis.push(
+                        //     "<li class='article' onclick='addCookie(50)'>" +
+                        //         "<div class='index_img'>" +
+                        //             "<img src='../images/09314147.jpg' width='245' height='185'>" +
+                        //         "</div>" +
+                        //         "<p class='category'>" +
+                        //             "<span class='category_icon'>" +
+                        //                 "<img src='../images/classify/fashion.png' width='22' height='22'>" +
+                        //             "</span>" +
+                        //             "<span class='category_name'>时尚</span>" +
+                        //         "</p>" +
+                        //         "<div class='index_title'>" +
+                        //         "</div>" +
+                        //         "<div class='index_last'>" +
+                        //             "<div class='last_news'>" +
+                        //                 "<span class='news_icn'>" +
+                        //                     "<img src='../images/news.png' width='18' height='18'>" +
+                        //                 "</span>" +
+                        //                 "<span class='news_num'>88</span>" +
+                        //             "</div>" +
+                        //             "<div class='last_colle'>" +
+                        //                 "<span class='colle_icn'>" +
+                        //                     "<img src='../images/colle.png' width='18' height='18'>" +
+                        //                 "</span>" +
+                        //                 "<span class='colle_num'>13</span>" +
+                        //             "</div>" +
+                        //         "</div>" +
+                        //     "</li>");
+                    // }
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
                     // next(lis.join(''), page < 6); //假设总页数为 6
@@ -92,5 +258,40 @@
             }
         });
     });
+
+    /**
+     * 显示文章列表
+     */
+    function showIndexArticle() {
+        $.ajax({
+            url:"http://localhost:8080/Bibased/Article/indexArticle", //首页文章显示的后台路径
+            data:{     },
+            type:"GET", //提交方式
+            dataType:"TEXT", //返回数据的类型
+            //TEXT字符串 JSON返回JSON XML返回XML
+            success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                var str=$.parseJSON(data);
+                console.log(data);
+                num=str.count;
+                aieList=str.data;
+                console.log(num);
+                console.log(aieList);
+                console.log(aieList.length);
+                // $("#show_article_comtxt_con").val("");
+            },
+            error:function (data) {
+            }
+        });
+    }
+
+    /**
+     * 点击某一文章，进入文章详情
+     * @param aieid
+     */
+    function addCookie(aieid) {
+        alert(aieid)
+        setCookie("aieid",aieid,1);
+        window.location.href = "user_article.html";
+    }
 </script>
 </html>

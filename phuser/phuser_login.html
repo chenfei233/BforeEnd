@@ -138,12 +138,6 @@
                     //TEXT字符串 JSON返回JSON XML返回XML
                     success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                         if(data){
-
-                            layer.open({
-                                title: '提醒',
-                                content: '登陆成功！'
-                            });
-
                             var str=$.parseJSON(data);
                             setCookie("phid", str.phid, 1);
                             setCookie("phnum", str.phnum, 1);
@@ -151,13 +145,7 @@
                             setCookie("phicon", str.phicon, 1);
                             setCookie("phemail", str.phemail, 1);
                             setCookie("phbrief", str.phbrief, 1);
-
                             window.location.href = "phuser_index.html";
-                            // window.location.href = "http://www.baidu.com";
-
-                            // console.log(getCookie("phbrief"));
-                            // console.log(getCookie("phicon"));
-
                         }else{
                             layer.open({
                                 title: '警告',
@@ -167,7 +155,10 @@
                         }
                     },
                     error:function (data) {
-                        alert("出错了!");
+                        layer.open({
+                            title: '警告',
+                            content: '出错了!'
+                        });
                     }
                 });
             }else if(ey_name.length == 0 || ey_pswd.length == 0){

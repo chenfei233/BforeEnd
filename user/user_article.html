@@ -30,14 +30,14 @@
     <div class="header_right">
         <span class="header_right_app">APP</span>
         <span class="header_right_so">
-            <img src="../images/user_so.png" alt="" width="18" height="18" class="user_so">
+            <img src="../images/collect.png" alt="" width="18" height="18" class="user_s">
         </span>
         <div class="user_msg">
-            <img class="user_img" src="../images/upload/user_face.png" alt="" width="36" height="36">
-            <span class="user_name">特使的同户名安卡</span>
-            <span class="user_logout">退出</span>
+            <img class="user_img" src="../images/upload/user_face.png" width="36" height="36" id="user_img" style="border-radius: 18px">
+            <span id="h_user_name">特使的同户名安卡</span>
+            <span id="h_user_logout">退出</span>
         </div>
-        <span class="header_right_about">关于我们</span>
+        <span class="header_right_about">我的收藏</span>
     </div>
 </div>
 <!--文章详情展示-->
@@ -55,6 +55,9 @@
                 <div id="show_article_user_info_img"></div>
                 <div id="show_article_user_info_name">用户昵称</div>
                 <div id="show_article_user_info_time">时间发布</div>
+                <div id="show_article_user_add_collect">
+                    <img src="../images/user_collect.png" width="50" height="50" title="点击收藏" id="user_collect">
+                </div>
             </div>
         </div>
         <div id="show_article_bottom"><!-- 文章信息显示 -->
@@ -75,7 +78,38 @@
     </div>
 </div>
 
-<div id="user_so"></div>
+<div id="user_news">
+    <div id="user_login"><!-- 用户登录 -->
+        <div class="login_usertxt">用户登录</div>
+        <div class="login_username">
+            <input type="text" placeholder="账号" id="login_username">
+        </div>
+        <div class="login_userpswd">
+            <input type="password" placeholder="密码" id="login_userpswd">
+        </div>
+        <div class="user_login_btn">登录</div>
+        <div class="gto_register">注册</div>
+        <div class="user_login_no">
+            <img src="../images/error.png" width="35" height="35">
+        </div>
+    </div>
+    <div id="user_register"><!-- 用户注册 -->
+        <div class="register_usertxt">用户注册</div>
+        <div class="register_username">
+            <input type="text" placeholder="您的账号" id="register_num">
+        </div>
+        <div class="register_userpswd">
+            <input type="password" placeholder="创建密码" id="register_pswdo">
+        </div>
+        <div class="register_userpswd">
+            <input type="password" placeholder="确认密码" id="register_pswdt">
+        </div>
+        <div class="user_register_btn">注册</div>
+        <div class="user_register_no">
+            <img src="../images/error.png" width="35" height="35">
+        </div>
+    </div>
+</div>
 </body>
 
 <script src="../js/jquery-3.3.1.min.js"></script>
@@ -142,7 +176,7 @@
         height: 50px;
         margin: 10px auto;
         margin-bottom: 30px;
-        background-color: #9F9F9F;
+        background-color: #eee;
         position: inherit;
     }
     #show_article_user_info_img{
@@ -170,6 +204,12 @@
         left: 60px;
         /*background-color: #01AAED;*/
     }
+    #show_article_user_add_collect{
+        position: relative;
+        left: -25px;
+        top: -50px;
+        float: right;
+    }
 
     #show_article_bottom{
         width: 1010px;
@@ -178,26 +218,17 @@
     #show_article_content{
         width: 1010px;
         padding-bottom: 50px;
-        /*padding: inherit;*/
-        /*height: 500px;!* 删掉的 *!*/
-        /*background-color: white;*/
-        /*background-color: #00F7DE;!* 删掉的 *!*/
     }
     #show_article_comment{
         width: 1010px;
-        /*height: 500px;*/
         margin: 0px auto;
         position: inherit;
         top: 10px;
-        /*top: 80px;*/
         background-color: #eee;
-        /*bottom: 20px;*/
-        /*background-color: #5FB878;!* 删掉的 *!*/
     }
     #show_article_addAndnum{
         width: 1010px;
         height: 350px;
-        /*background-color: #9F9F9F;*/
         position: inherit;
     }
     #show_article_comnum{
@@ -258,7 +289,6 @@
     .show_article_show_comment{
         width: 900px;
         position: inherit;
-        /*background-color: white;*/
         border-top: #777777 solid 1px;
     }
     .show_article_comimg{
@@ -266,9 +296,6 @@
         height: 64px;
         margin-top: 30px;
         border-radius: 64px;
-        /*background-image: url("../images/user_face.png");*/
-        /*background-size: 64px 64px;*/
-        /*background-repeat:no-repeat;*/
     }
     .show_user_name{
         position: inherit;
@@ -288,14 +315,77 @@
         position: inherit;
         left: 100px;
         top: -40px;
-        /*background-color: #01AAED;*/
         line-height: 24px;
         font-size: 18px;
     }
 
+    #user_login,#user_register{
+        width: 600px;
+        height: 430px;
+        background-color: white;
+        margin-top: 130px;
+        margin-left: 375px;
+        float: left;
+    }
+    input {
+        padding: 12px 20px;
+        width: 300px;
+        border: 1px solid #e5e5e5;
+        border-radius: 0;
+        color: #ccc;
+        font-size: 20px;
+    }
+    .login_usertxt,.register_usertxt{
+        width: 120px;
+        margin: 30px auto;
+        margin-top: 50px;
+        font-size: 30px;
+        color: #000;
+        /*float: left;*/
+    }
+    .login_username,.login_userpswd,.register_username,.register_userpswd{
+        width: 300px;
+        margin: 20px auto;
+        margin-left: 130px;
+    }
+    .user_login_btn,.gto_register,.user_register_btn{
+        width: 340px;
+        height: 40px;
+        color: white;
+        text-align: center;
+        line-height: 40px;
+        font-size: 22px;
+        margin: 20px auto;
+        background-color: #ffc81f;
+    }
+    .user_login_btn,.user_register_btn{
+        margin-top: 30px;
+    }
+    .user_login_no{
+        width: 35px;
+        height: 35px;
+        position: relative;
+        top: -388px;
+        left: 565px;
+    }
+    .user_register_no{
+        width: 35px;
+        height: 35px;
+        position: relative;
+        top: -397px;
+        left: 565px;
+    }
+
 </style>
 <script type="text/javascript">
-    $(document).ready(function () {
+    // $(document).ready(function () {
+
+        var layer; // layer全局定义
+
+        $("#user_news").hide();
+        $("#user_login").hide();
+        $("#user_register").hide();
+
         /**
          *  layer全局化定义
          * */
@@ -303,16 +393,48 @@
             layer = layui.layer;
         });
 
-        function txtComment() {
-            for (var i = 0; i < 4; i++) {
-                // lis.push('<li>' + ((page - 1) * 10 + i + 1) + '</li>')
-                // lis.push("<li class='article'>测试文件数据" + ((page - 1) * 4 + i + 1) + "</li>")
+        showArticle();
+        showComment();
+        userInfo();
+
+        /**
+         * 添加/删除 收藏
+         **/
+        function Collect(aieid) {
+            var aieid = aieid;
+            var oyid = getCookie("oyid");
+            if(oyid){
+                $.ajax({
+                    url: "http://localhost:8080/Bibased/Collect/collectOperation", //收藏操作的后台路径
+                    data: {
+                        oyid: oyid,
+                        aieid: aieid
+                    },
+                    type: "POST", //提交方式
+                    dataType: "TEXT", //返回数据的类型
+                    //TEXT字符串 JSON返回JSON XML返回XML
+                    success: function (data) { //回调函数 ,成功时返回的数据存在形参data里
+                        // window.location.href = "user_article.html";
+                        if(data > 0){
+                            layer.msg('已添加收藏');
+                        }else if(data < 0){
+                            layer.msg('已删除收藏');
+                        }else{
+                            layer.msg('收藏即没添加，也没删除');
+                        }
+                    },
+                    error: function (data) {
+                        layer.msg('出错了！');
+                    }
+                });
+            }else {
+                layer.msg('请先登录！');
             }
         }
 
-        showArticle();
-        showComment();
-
+        /**
+         * 显示文章信息
+         **/
         function showArticle(aieid) {
             //隐藏#show_table
             //显示#show_article
@@ -335,10 +457,10 @@
                     $("#show_article_head_cgyname").text(str.cgyname);//类别名称
                     $("#show_article_head_title").text(str.aietitle);//文章标题
                     $("#show_article_content").html(str.aiecontent);//文章内容
-                    $("#show_article_user_info_img").css("background-image", "url(" + str.phicon + ")");//发布人头像
+                    $("#show_article_user_info_img").css("background-image", "url('../images/upload/" + str.phicon + "')");//发布人头像
                     $("#show_article_user_info_name").text(str.phname);//发布人昵称
                     $("#show_article_user_info_time").text(str.aietime);//发布时间
-
+                    $("#user_collect").attr("onclick","Collect(" + aieid + ");");
                     setCookie("aieid", str.aieid, 1);
                 },
                 error: function (data) {
@@ -350,14 +472,15 @@
             });
         }
 
+        /**
+         * 添加评论
+         **/
         $("#show_article_comtxt_btn").click(function () {
-
-            // alert($("#show_article_comtxt_con").val())
 
             var content = $("#show_article_comtxt_con").val();
             var aieid = getCookie("aieid");
             var oyid = getCookie("oyid");
-            // var oyid=64;
+
             if (oyid) {
                 $.ajax({
                     url: "http://localhost:8080/Bibased/Commentary/addOrUpdata", //添加评论的后台路径
@@ -370,12 +493,7 @@
                     dataType: "TEXT", //返回数据的类型
                     //TEXT字符串 JSON返回JSON XML返回XML
                     success: function (data) { //回调函数 ,成功时返回的数据存在形参data里
-                        layer.open({
-                            title: '提醒',
-                            content: '添加评论成功！'
-                        });
-                        // $("#show_article_comtxt_con").val("");
-                        // showComment();
+                        window.location.href = "user_article.html";
                     },
                     error: function (data) {
                         layer.open({
@@ -433,7 +551,7 @@
             $("#show_article_show_commentAll").append(
                 "<div class='show_article_show_comment'>" +
                 "<div class='show_article_comimg'>\n" +
-                "<img src=" + data.oyicon + " alt='' width='64' height='64'>" +
+                "<img src='../images/upload/" + data.oyicon + "' alt='' width='64' height='64' style='border-radius: 32px'>" +
                 "</div>" +
                 "<div class='show_user_name'>" + data.oyname + "</div>" +
                 "<div class='show_user_time'>" + data.cmttime + "</div>" +
@@ -441,7 +559,205 @@
                 "</div>")
         }
 
-    });
+        /**
+         * 返回首页
+         */
+        $("#header_left_title").click(function () {
+            window.location.href = "user_index.html";
+        });
+
+        /**
+         * 进入用户收藏页面
+         */
+        $(".user_s,.header_right_about").click(function (){
+            var oyid=getCookie("oyid");
+            if(oyid) {//存在用户cookie
+                window.location.href = "user_collect.html";
+            }else{
+                layer.msg('请先登录！');
+            }
+        });
+
+        /**
+         * 头部显示的用户头像 昵称 登录/退出 预先处理
+         **/
+        function userInfo(){
+            var oyid=getCookie("oyid");
+            if(oyid){//存在用户cookie
+                $("#user_img").attr("src","../images/upload/" + getCookie("oyicon"));
+                $("#h_user_name").html(getCookie("oyname"));
+                $("#h_user_logout").html("退出");
+            }else{//不存在用户cookie，则是登录
+                $("#h_user_name").html("");
+                $("#h_user_logout").html("登录");
+            }
+        }
+
+        /**
+         * 头部显示的用户头像 昵称 点击处理
+         **/
+        $("#user_img,#h_user_name").click(function () {
+            var oyid=getCookie("oyid");
+            if(oyid){//进入个人信息详情
+                // console.log("进入用户信息页面");
+                window.location.href = "user_info.html";
+            }else{//登录div显示
+                // console.log("进入用户登录页面");
+                $("#user_news").show();
+                $("#user_login").show();
+            }
+        });
+
+        /**
+         * 头部显示的 登录/退出 点击处理
+         **/
+        $("#h_user_logout").click(function () {
+            var oyid=getCookie("oyid");
+            if(oyid){
+                //取消所有cookie
+                setCookie("oyid", "", 0);
+                setCookie("oynum", "", 0);
+                setCookie("oyname", "", 0);
+                setCookie("oyicon", "", 0);
+                setCookie("oyemail", "", 0);
+                setCookie("oybrief", "", 0);
+                // console.log("用户退出，刷新当前页面");
+                window.location.href = "user_article.html";
+            }else{
+                //登录div显示
+                $("#user_news").show();
+                $("#user_login").show();
+                // console.log("进入用户登录页面");
+            }
+        });
+
+        /**
+         * 取消登录/注册
+         **/
+        $(".user_login_no,.user_register_no").click(function () {
+            $("#user_news").hide();
+        });
+
+        /**
+         * 点击登录按钮
+         */
+        $(".user_login_btn").click(function () {
+
+            var oynum=$("#login_username").val();
+            var oypswd=$("#login_userpswd").val();
+
+            // console.log("账号:"+$("#login_username").val())
+            // console.log("密码:"+$("#login_userpswd").val())
+
+            if ( oynum.length > 0 && oypswd.length > 0 ) {
+                $.ajax({
+                    url:"http://localhost:8080/Bibased/Oyuser/oyuserLogin", //处理登录页面的路径
+                    data:{
+                        oynum:oynum,
+                        oypswd:oypswd
+                    },//要提交的数据是一个JSON
+                    type:"POST", //提交方式
+                    dataType:"TEXT", //返回数据的类型
+                    //TEXT字符串 JSON返回JSON XML返回XML
+                    success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                        if(data){
+                            var str=$.parseJSON(data);
+                            setCookie("oyid", str.oyid, 1);
+                            setCookie("oynum", str.oynum, 1);
+                            setCookie("oyname", str.oyname, 1);
+                            setCookie("oyicon", str.oyicon, 1);
+                            setCookie("oyemail", str.oyemail, 1);
+                            setCookie("oybrief", str.oybrief, 1);
+                            window.location.href = "user_article.html";
+                        }else{
+                            layer.open({
+                                title: '警告',
+                                content: '账号或密码错误！'
+                            });
+                        }
+                    },
+                    error:function (data) {
+                        layer.open({
+                            title: '警告',
+                            content: '出错了!'
+                        });
+                    }
+                });
+            }else{
+                layer.open({
+                    title: '警告',
+                    content: '账号或密码不能为空！'
+                });
+            }
+
+        });
+
+        $(".gto_register").click(function () {
+            $("#user_register").show();
+            $("#user_login").hide();
+            // $("#user_news").hide();
+        });
+
+        /**
+         * 点击注册按钮
+         */
+        $(".user_register_btn").click(function () {
+
+            // console.log("您的账号:"+$("#register_num").val())
+            // console.log("创建密码:"+$("#register_pswdo").val())
+            // console.log("确认密码:"+$("#register_pswdt").val())
+
+            var oynum=$("#register_num").val();
+            var oypswdo=$("#register_pswdo").val();
+            var oypswdt=$("#register_pswdt").val();
+
+            if (oynum.length > 0 && oypswdo.length > 0 && oypswdt.length > 0 && oypswdo == oypswdt) {
+                // 输入没问题则进入ajax传值
+                $.ajax({
+                    url:"http://localhost:8080/Bibased/Oyuser/addOyuser", //处理注册页面的路径
+                    data:{
+                        oynum:oynum,
+                        oypswd:oypswdo,
+                        oyname:"用户u_298",
+                        oyicon:"user_face.png"
+                    },//要提交的数据是一个JSON
+                    type:"POST", //提交方式
+                    dataType:"TEXT", //返回数据的类型
+                    //TEXT字符串 JSON返回JSON XML返回XML
+                    success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                        if(data){
+                            var str=$.parseJSON(data);
+                            setCookie("oyid", str.oyid, 1);
+                            setCookie("oynum", str.oynum, 1);
+                            setCookie("oyname", str.oyname, 1);
+                            setCookie("oyicon", str.oyicon, 1);
+                            setCookie("oyemail", str.oyemail, 1);
+                            setCookie("oybrief", str.oybrief, 1);
+                            window.location.href = "user_index.html";
+                        }else{
+                            layer.open({
+                                title: '提示',
+                                content: '该账号已存在！'
+                            });
+                        }
+                    }
+                });
+            } else if(oypswdo != oypswdt){
+                layer.open({
+                    title: '警告',
+                    content: '两次密码不一致！'
+                });
+                return;
+            } else {
+                layer.open({
+                    title: '警告',
+                    content: '输入内容非法！'
+                });
+            }
+
+        });
+
+    // });
 
 </script>
 </html>

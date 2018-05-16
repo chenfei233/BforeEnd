@@ -14,7 +14,3 @@ $(".cate").on({
     }
 }) ;
 
-$(".user_so").click(function (){
-    $("#user_so").css("display","block");
-});
-

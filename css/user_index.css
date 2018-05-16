@@ -107,7 +107,7 @@ li{
     float: left;
 }
 
-.user_name{
+#h_user_name{
     width: 100px;
     height: 60px;
     font-size: 14px;
@@ -118,7 +118,7 @@ li{
     overflow: hidden;
 }
 
-.user_logout{
+#h_user_logout{
     width: 60px;
 }
 
@@ -126,7 +126,7 @@ li{
     width: 120px;
 }
 
-.user_logout,.header_right_about{
+#h_user_logout,.header_right_about{
     height: 60px;
     font-size: 14px;
     line-height: 60px;
@@ -142,8 +142,8 @@ li{
     top: 60px;
 }
 
-#user_so{
-    display: none;
+#user_news{
+    /*display: none;*/
     position: fixed;
     top: 0;
     left: 0;

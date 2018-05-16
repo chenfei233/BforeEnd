@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>管理员信息</title>
-    <link rel="icon" type="image/x-icon" href="../images/admin.png"/>
+    <title>发布员信息</title>
+    <link rel="icon" type="image/x-icon" href="../images/write.png"/>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
     <!--<script src="../js/jquery-3.3.1.min.js"></script>-->
     <!--<script src="../layui/layui.js"></script>-->
@@ -14,11 +14,11 @@
         <div class="layui-logo">每日一报   后台管理</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="javascript:void(0)" onclick="consoleAdmin()">控制台</a></li>
+            <li class="layui-nav-item"><a href="javascript:void(0)" onclick="consolePhuser()">控制台</a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a id="user_show" href="javascript:void(0)" onclick="adminInfo()"></a>
+                <a id="user_show" href="javascript:void(0)" onclick="phuserInfo()"></a>
             </li>
             <li class="layui-nav-item"><a href="javascript:void(0)" onclick="signOut()">退了</a></li>
         </ul>
@@ -43,16 +43,27 @@
                 <img src="../images/upload/user_face.png" alt="" width="60" height="60">
             </div>
             <div class="show_img">
-                <span class="file-box">
-                    更改头像
-                    <input type="file" class="file-btn" id="fileup" onchange="imgChange()" />
-                </span>
+            <span class="file-box">
+                更改头像
+                <input type="file" class="file-btn" id="fileup" onchange="imgChange()" />
+            </span>
             </div>
         </div>
         <div class="set_up_info_two">
             <div class="set_up_info_two_name">
                 <span>昵称</span>
                 <input type="text" placeholder="昵称" id="user_name">
+            </div>
+            <div class="set_up_info_two_email">
+                <span>邮箱</span>
+                <input type="text" placeholder="邮箱" id="user_email">
+                <span id="user_email_ts"></span>
+            </div>
+        </div>
+        <div class="set_up_info_three">
+            <div class="set_up_info_three_cont">
+                <span class="set_up_info_three_jj">简介</span>
+                <textarea name="" id="user_jj" cols="70" rows="3" placeholder="一句话介绍自己" style="margin-left: 105px"></textarea>
             </div>
         </div>
         <div class="set_up_info_four">
@@ -91,6 +102,9 @@
     #layui-footer{
         position: absolute;
         left: 0;
+    }
+    body{
+        background-color: #eee;
     }
     .content{
         width: 1010px;
@@ -172,13 +186,13 @@
     }
 
     .set_up_info_xiugai{
-        margin-left: 250px;
-        margin-top: 80px;
+        margin-left: 50px;
+        margin-top: 40px;
         float: left;
     }
     #show_img{
-        margin-top: 55px;
-        margin-left: 130px;
+        margin-top: 25px;
+        margin-left: 15px;
         float: left;
         border-radius: 30px;
         overflow: hidden;
@@ -186,26 +200,46 @@
     .show_img{
         float: left;
         position: relative;
-        top: 70px;
-        left: 130px;
+        top: 40px;
+        left: 30px;
     }
 
     input {
         width: 320px;
         height: 30px;
-        margin-left: 50px;
+        margin-left: 10px;
     }
     .set_up_info_two{
         width: 100%;
         height: 50px;
         /*background-color: #666666;*/
         float: left;
-        margin-top: 55px;
+        margin-top: 25px;
     }
     .set_up_info_two_name{
-        margin-left: 296px;
+        margin-left: 95px;
         float: left;
         line-height: 50px;
+    }
+    .set_up_info_two_email{
+        margin-left: 80px;
+        float: left;
+        line-height: 50px;
+    }
+
+    .set_up_info_three{
+        width: 100%;
+        height: 80px;
+        /*background-color: #00F7DE;*/
+        float: left;
+        margin-top: 20px;
+    }
+    .set_up_info_three_jj{
+        position: relative;
+        top: -50px;
+        left: 95px;
+        margin-top: -50px;
+        /*background-color: #01AAED;*/
     }
 
     .set_up_info_four{
@@ -213,7 +247,7 @@
         height: 40px;
         background-color: #ffc81f;
         float: left;
-        margin-top: 65px;
+        margin-top: 25px;
         margin-left: 430px;
     }
     #user_save{
@@ -260,25 +294,27 @@
      * 显示用户头像和昵称
      **/
     function firstShow() {
-        $("#user_show").append("<img src='../images/upload/" + getCookie("admicon") + "' class='layui-nav-img'>" + getCookie("admname"));
+        $("#user_show").append("<img src='../images/upload/" + getCookie("phicon") + "' class='layui-nav-img'>" + getCookie("phname"))
     }
 
     /**
      * 返回控制台
      **/
-    function consoleAdmin() {
-        window.location.href = "admin_index.html";
+    function consolePhuser() {
+        window.location.href = "phuser_index.html";
     }
 
     /**
      * 退了
      */
     function signOut() {
-        setCookie("admid", "", 0);
-        setCookie("admname", "", 0);
-        setCookie("admicon", "", 0);
-        setCookie("admnum", "", 0);
-        window.location.href = "admin_login.html";
+        setCookie("phid", "", 0);
+        setCookie("phnum", "", 0);
+        setCookie("phname", "", 0);
+        setCookie("phicon", "", 0);
+        setCookie("phemail", "", 0);
+        setCookie("phbrief", "", 0);
+        window.location.href = "phuser_login.html";
     }
 
     var layer; // layer全局定义
@@ -286,11 +322,11 @@
 
     $("#set_up_pswd").hide();
     $("#content_right_o").hide();
-    $("#content_username").html(getCookie("admname"));
-    // $("#content_usericon").html("<img src='../images/upload/0011.jpg' width='80' height='80'>");
-    // $("#content_usericon").html("<img src='../images/upload/" + getCookie("admicon") + "' width='80' height='80'>");
-    $("#show_img").html("<img src='../images/upload/" + getCookie("admicon") + "' width='60' height='60'>");
-    $("#user_name").val(getCookie("admname"));
+    $("#content_username").html(getCookie("phname"));
+    $("#show_img").html("<img src='../images/upload/" + getCookie("phicon") + "' width='60' height='60'>");
+    $("#user_name").val(getCookie("phname"));
+    $("#user_email").val(getCookie("phemail"));
+    $("#user_jj").val(getCookie("phbrief"));
 
     /**
      *  layer全局化定义
@@ -314,11 +350,9 @@
     }
 
     /**
-     * 修改头像（修改成功，需要更新cookie,刷新页面）
+     * 修改头像（修改成功，还需要更新cookie,刷新页面）
      */
     function imgChange() {
-
-        // setCookie("oyid",64,1)
 
         var file =document.getElementById("fileup");
         var imgUrl =window.URL.createObjectURL(file.files[0]);
@@ -337,25 +371,27 @@
             success: function (data) {
                 // console.log("路径："+data)
                 if(data){
-                    var admicon=data;//头像路径
-                    var admid=getCookie("admid");//普通用户id
+                    var phicon=data;//头像路径
+                    var phid=getCookie("phid");//用户id
                     $.ajax({
-                        url:"http://localhost:8080/Bibased/Admin/updataAdminIcon", //普通用户更新个人头像信息
+                        url:"http://localhost:8080/Bibased/Phuser/updataPhuserIcon", //用户更新个人头像信息
                         data:{
-                            admid:admid,
-                            admicon:admicon
+                            phid:phid,
+                            phicon:phicon
                         },//要提交的数据是一个JSON
                         type:"POST", //提交方式
                         dataType:"TEXT", //返回数据的类型
                         //TEXT字符串 JSON返回JSON XML返回XML
                         success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                             var str=$.parseJSON(data);
-                            setCookie("admid", str.admid, 1);
-                            setCookie("admname", str.admname, 1);
-                            setCookie("admicon", str.admicon, 1);
-                            setCookie("admnum", str.admnum, 1);
+                            setCookie("phid", str.phid, 1);
+                            setCookie("phnum", str.phnum, 1);
+                            setCookie("phname", str.phname, 1);
+                            setCookie("phicon", str.phicon, 1);
+                            setCookie("phemail", str.phemail, 1);
+                            setCookie("phbrief", str.phbrief, 1);
                             //刷新页面
-                            window.location.href = "admin_info.html";
+                            window.location.href = "phuser_info.html";
                         },
                         error:function (data) {
                             layer.open({
@@ -381,30 +417,54 @@
     }
 
     /**
-     * 修改信息（修改成功，需要更新cookie,刷新页面）
+     *  校验邮箱正则
+     * */
+    $("#user_email").on('input propertychange', function () {
+        var mailTxt = $("#user_email").val();//获取输入的邮箱
+        var szReg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; //邮箱正则
+        var bChk=szReg.test(mailTxt);
+        // alert(bChk.valueOf());
+        if(bChk){
+            email=true;
+            $("#user_email_ts").html("<b style='color: green;font-size: 14px'>对！</b>");
+        }else{
+            email=false;
+            $("#user_email_ts").html("<b style='color: red;font-size: 14px'>错！</b>");
+        }
+        console.log("email"+email)
+    });
+
+    /**
+     * 修改信息（修改成功，还需要更新cookie,刷新页面）
      */
     function userSave() {
 
-        var admid=getCookie("admid");//管理id
-        var admname=$("#user_name").val();//昵称
+        var phid=getCookie("phid");//用户id
+        var phname=$("#user_name").val();//昵称
+        var phemail=$("#user_email").val();//邮箱
+        var phbrief=$("#user_jj").val();//简介
 
         $.ajax({
-            url:"http://localhost:8080/Bibased/Admin/updataAdminInfo", //普通用户更新个人信息(昵称、简介、邮箱)
+            url:"http://localhost:8080/Bibased/Phuser/updataPhuserInfo", //普通用户更新个人信息(昵称、简介、邮箱)
             data:{
-                admid:admid,
-                admname:admname
+                phid:phid,
+                phname:phname,
+                phemail:phemail,
+                phbrief:phbrief
             },//要提交的数据是一个JSON
             type:"POST", //提交方式
             dataType:"TEXT", //返回数据的类型
             //TEXT字符串 JSON返回JSON XML返回XML
             success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                 var str=$.parseJSON(data);
-                setCookie("admid", str.admid, 1);
-                setCookie("admname", str.admname, 1);
-                setCookie("admicon", str.admicon, 1);
-                setCookie("admnum", str.admnum, 1);
+                setCookie("phid", str.phid, 1);
+                setCookie("phnum", str.phnum, 1);
+                setCookie("phname", str.phname, 1);
+                setCookie("phicon", str.phicon, 1);
+                setCookie("phemail", str.phemail, 1);
+                setCookie("phbrief", str.phbrief, 1);
                 //刷新页面
-                window.location.href = "admin_info.html";
+                window.location.href = "phuser_info.html";
             },
             error:function (data) {
                 layer.open({
@@ -419,9 +479,9 @@
      *  校验两次密码输入是否一致
      * */
     $("#set_up_pswd_two").on('input propertychange', function () {
-        var oypswdo=$("#set_up_pswd_one").val();//第一次密码
-        var oypswdt=$("#set_up_pswd_two").val();//第二次密码
-        if(oypswdo != oypswdt){
+        var pswdo=$("#set_up_pswd_one").val();//第一次密码
+        var pswdt=$("#set_up_pswd_two").val();//第二次密码
+        if(pswdo != pswdt){
             pswd=false;
             $("#set_up_pswd_ts").html("<b style='color: red;font-size: 14px'>两次密码输入不一致！</b>");
         }else{
@@ -437,16 +497,16 @@
     function userPswd() {
         // setCookie("oyid",64,1)
 
-        var admid=getCookie("admid");//普通用户id
+        var phid=getCookie("phid");//普通用户id
         var oldpswd=$("#set_up_pswd_old").val();//旧密码
         var newpswd=$("#set_up_pswd_one").val();//第一次密码
 
         if(pswd){
             $.ajax({
-                url:"http://localhost:8080/Bibased/Admin/findByAdmidAndAdmpwd", //根据id、密码查询
+                url:"http://localhost:8080/Bibased/Phuser/findByPhidAndAndPhpswd", //根据id、密码查询
                 data:{
-                    admid:admid,
-                    admpwd:oldpswd
+                    phid:phid,
+                    phpswd:oldpswd
                 },//要提交的数据是一个JSON
                 type:"POST", //提交方式
                 dataType:"TEXT", //返回数据的类型
@@ -455,10 +515,10 @@
                     // console.log(data)
                     if(data)
                         $.ajax({
-                            url:"http://localhost:8080/Bibased/Admin/updataAdminPswd", //更新个人密码信息
+                            url:"http://localhost:8080/Bibased/Phuser/updataPhuserPswd", //更新个人密码信息
                             data:{
-                                admid:admid,
-                                admpwd:newpswd
+                                phid:phid,
+                                phpswd:newpswd
                             },//要提交的数据是一个JSON
                             type:"POST", //提交方式
                             dataType:"TEXT", //返回数据的类型

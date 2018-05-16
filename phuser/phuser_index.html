@@ -13,12 +13,7 @@
         <div class="layui-logo">每日一报   发布管理</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;" id="user_show">
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                </dl>
+                <a id="user_show" href="javascript:void(0)" onclick="phuserInfo()"></a>
             </li>
             <li class="layui-nav-item"><a href="javascript:void(0)" onclick="signOut()">退了</a></li>
         </ul>
@@ -188,6 +183,7 @@
         background-image: url("../images/upload/user_face.png");
         background-size: 50px 50px;
         background-repeat:no-repeat;
+        overflow: hidden;
     }
     #show_article_user_info_name{
         width: 200px;
@@ -216,6 +212,7 @@
         /*height: 500px;!* 删掉的 *!*/
         background-color: white;
         /*box-shadow: 2px 2px 0px #777777;*/
+        margin-bottom: 55px;
     }
 </style>
 <script>
@@ -234,7 +231,7 @@
     layui.use('layer', function () {
         layer = layui.layer;
     });
-    layer.msg('欢迎您：'+getCookie("phname"));
+    // layer.msg('欢迎您：'+getCookie("phname"));
 
     var E = window.wangEditor;
     var editor = new E('#div1', '#div2');  // 两个参数也可以传入 elem 对象，class 选择器
@@ -262,8 +259,11 @@
         $(".write_last").hide();
     });
 
-    function firstShow() {//显示用户头像和昵称
-        $("#user_show").append("<img src=" + getCookie("phicon") + " class='layui-nav-img'>" + getCookie("phname"))
+    /**
+     * 显示用户头像和昵称
+     **/
+    function firstShow() {
+        $("#user_show").append("<img src='../images/upload/" + getCookie("phicon") + "' class='layui-nav-img'>" + getCookie("phname"))
     }
 
     function findAllCategory() {//显示类别
@@ -535,7 +535,7 @@
                 $("#show_article_head_title").text(str.aietitle);
                 $("#show_article_content").html(str.aiecontent);
                 //发布人头像 昵称 时间
-                $("#show_article_user_info_img").html("<img src='" + str.phicon + "' width='50' height='50'>");
+                $("#show_article_user_info_img").html("<img src='../images/upload/" + str.phicon + "' width='50' height='50'>");
                 $("#show_article_user_info_name").text(str.phname);
                 $("#show_article_user_info_time").text(str.aietime);
             },
@@ -729,6 +729,10 @@
                 });
             }
         });
+    }
+
+    function phuserInfo() {
+        window.location.href = "phuser_info.html";
     }
 
     /**

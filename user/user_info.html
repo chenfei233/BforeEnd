@@ -30,14 +30,14 @@
     <div class="header_right">
         <span class="header_right_app">APP</span>
         <span class="header_right_so">
-            <img src="../images/star.png" alt="" width="18" height="18" class="user_so">
+            <img src="../images/collect.png" alt="" width="18" height="18" class="user_s">
         </span>
         <div class="user_msg">
-            <img class="user_img" src="../images/upload/user_face.png" alt="" width="36" height="36">
-            <span class="user_name">特使的同户名安卡</span>
-            <span class="user_logout">退出</span>
+            <img class="user_img" src="../images/upload/user_face.png" width="36" height="36" id="user_img" style="border-radius: 18px">
+            <span id="h_user_name">特使的同户名安卡</span>
+            <span id="h_user_logout">退出</span>
         </div>
-        <span class="header_right_about">关于我们</span>
+        <span class="header_right_about">我的收藏</span>
     </div>
 </div>
 <div class="content">
@@ -91,13 +91,13 @@
 </div>
 <div id="set_up_pswd">
     <div class="set_up_pswd">
-        <input type="text" placeholder="请输入原密码" id="set_up_pswd_old">
+        <input type="password" placeholder="请输入原密码" id="set_up_pswd_old">
     </div>
     <div class="set_up_pswd">
-        <input type="text" placeholder="请设置新密码" id="set_up_pswd_one">
+        <input type="password" placeholder="请设置新密码" id="set_up_pswd_one">
     </div>
     <div class="set_up_pswd">
-        <input type="text" placeholder="确认新密码" id="set_up_pswd_two">
+        <input type="password" placeholder="确认新密码" id="set_up_pswd_two">
         <span id="set_up_pswd_ts"></span>
     </div>
     <div class="set_up_pswd_btn">
@@ -318,6 +318,8 @@
     var email=false;//邮箱正则校验标志
     var pswd=false;//两次密码输入校验
 
+    userInfo();
+
     $("#set_up_pswd").hide();
     $("#content_right_o").hide();
     $("#content_username").html(getCookie("oyname"));
@@ -348,6 +350,59 @@
         $("#set_up_pswd").show();
         $("#content_right_o").show();
     }
+
+    /**
+     * 头部显示的用户头像 昵称 登录/退出 预先处理
+     **/
+    function userInfo(){
+        var oyid=getCookie("oyid");
+        if(oyid){//存在用户cookie
+            $("#user_img").attr("src","../images/upload/" + getCookie("oyicon"));
+            $("#h_user_name").html(getCookie("oyname"));
+            $("#h_user_logout").html("退出");
+        }else{//不存在用户cookie，则是登录
+            $("#h_user_name").html("");
+            $("#h_user_logout").html("登录");
+        }
+    }
+
+    /**
+     * 头部显示的用户头像 昵称 点击处理
+     **/
+    $("#user_img,#h_user_name").click(function () {
+        var oyid=getCookie("oyid");
+        if(oyid){//进入个人信息详情
+            // console.log("进入用户信息页面");
+            window.location.href = "user_info.html";
+        }else{//登录div显示
+            // console.log("进入用户登录页面");
+            $("#user_news").show();
+            $("#user_login").show();
+        }
+    });
+
+    /**
+     * 头部显示的 登录/退出 点击处理
+     **/
+    $("#h_user_logout").click(function () {
+        var oyid=getCookie("oyid");
+        if(oyid){
+            //取消所有cookie
+            setCookie("oyid", "", 0);
+            setCookie("oynum", "", 0);
+            setCookie("oyname", "", 0);
+            setCookie("oyicon", "", 0);
+            setCookie("oyemail", "", 0);
+            setCookie("oybrief", "", 0);
+            // console.log("用户退出，刷新当前页面");
+            window.location.href = "user_index.html";
+        }else{
+            //登录div显示
+            $("#user_news").show();
+            $("#user_login").show();
+            // console.log("进入用户登录页面");
+        }
+    });
 
     /**
      * 修改头像（修改成功，还需要更新cookie,刷新页面）
@@ -389,6 +444,7 @@
                             // console.log(str)
                             //修改成功，更新cookie
                             //刷新页面
+                            window.location.href = "user_info.html";
                         },
                         error:function (data) {
                             layer.open({
@@ -456,8 +512,14 @@
                 //TEXT字符串 JSON返回JSON XML返回XML
                 success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                     var str=$.parseJSON(data);
-                    // console.log(str)
+                    setCookie("oyid", str.oyid, 1);
+                    setCookie("oynum", str.oynum, 1);
+                    setCookie("oyname", str.oyname, 1);
+                    setCookie("oyicon", str.oyicon, 1);
+                    setCookie("oyemail", str.oyemail, 1);
+                    setCookie("oybrief", str.oybrief, 1);
                     //修改成功，更新cookie
+                    window.location.href = "user_info.html";
                 },
                 error:function (data) {
                     layer.open({
@@ -473,7 +535,6 @@
             });
         }
     }
-
 
     /**
      *  校验两次密码输入是否一致
@@ -553,10 +614,23 @@
         }else{
             layer.open({
                 title: '警告',
-                content: '两次密码输入不一直！'
+                content: '两次密码输入不一致！'
             });
         }
     }
 
+    /**
+     * 返回首页
+     */
+    $("#header_left_title").click(function () {
+        window.location.href = "user_index.html";
+    });
+
+    /**
+     * 进入收藏页面
+     */
+    $(".user_s,.header_right_about").click(function (){
+        window.location.href = "user_collect.html";
+    });
 </script>
 </html>

@@ -217,11 +217,22 @@
 </style>
 <script>
 
+    myInterceptor();
+
     $("#add_article").hide();// 隐藏写作div
     $("#show_article").hide();// 隐藏文章div
 
     firstShow(); // 显示用户名头像和昵称
     findAllCategory(); // 显示所有类别
+
+    function myInterceptor() {//没有用户cookie。跳转到登录页面
+        var phid=getCookie("phid");//用户id
+        if(phid){
+            return;
+        }else{
+            window.location.href = "phuser_login.html";
+        }
+    }
 
     var layer; // layer全局定义
 
@@ -608,7 +619,7 @@
                     var cgyid=$("#selType").val();//类别id
                     // console.log("123132132");
                     $.ajax({
-                        url:"http://localhost:8080/Bibased/Article/addArticle", //后台添加文章的路径
+                        url:"http://localhost:8080/Bibased/Article/updataArticle", //后台添加文章的路径
                         data:{
                             aieid:aieid,
                             aieimg:aieimg,

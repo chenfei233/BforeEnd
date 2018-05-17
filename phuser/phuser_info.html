@@ -286,7 +286,18 @@
 </style>
 <script>
 
+    myInterceptor();
+
     $("#content_right_o").hide();
+
+    function myInterceptor() {//没有用户cookie。跳转到登录页面
+        var phid=getCookie("phid");//用户id
+        if(phid){
+            return;
+        }else{
+            window.location.href = "phuser_login.html";
+        }
+    }
 
     firstShow();
 

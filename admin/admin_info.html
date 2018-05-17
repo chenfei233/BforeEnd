@@ -252,6 +252,16 @@
 </style>
 <script>
 
+    myInterceptor();
+    function myInterceptor() {//没有用户cookie。跳转到登录页面
+        var admid=getCookie("admid");//用户id
+        if(admid){
+            return;
+        }else{
+            window.location.href = "admin_login.html";
+        }
+    }
+
     $("#content_right_o").hide();
 
     firstShow();

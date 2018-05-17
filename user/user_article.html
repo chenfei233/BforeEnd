@@ -17,15 +17,7 @@
         <span class="header_left_title" id="header_left_title">每日一报新闻</span>
     </div>
     <div class="header_center">
-        <ul id="cate">
-            <li class="cate"><span class="en">商业</span></li>
-            <li class="cate"><span class="en">智能</span></li>
-            <li class="cate"><span class="en">设计</span></li>
-            <li class="cate"><span class="en">时尚</span></li>
-            <li class="cate"><span id="btn_fabu">娱乐</span></li>
-            <li class="cate"><span>城市</span></li>
-            <li class="cate"><span>游戏</span></li>
-        </ul>
+        <ul id="cate"></ul>
     </div>
     <div class="header_right">
         <span class="header_right_app">APP</span>
@@ -396,6 +388,7 @@
         showArticle();
         showComment();
         userInfo();
+        findAllCategory();
 
         /**
          * 添加/删除 收藏
@@ -756,6 +749,46 @@
             }
 
         });
+
+        /**
+         * 点击分类
+         **/
+        function classify(cgyid) {
+            setCookie("classifyID",cgyid,1);
+            window.location.href = "user_classify.html";
+        }
+
+        /**
+         * 显示类别
+         */
+        function findAllCategory() {
+            $.ajax({
+                url:"http://localhost:8080/Bibased/Category/findAll", //处理登录页面的路径
+                data:{  },
+                type:"GET", //提交方式
+                dataType:"TEXT", //返回数据的类型
+                //TEXT字符串 JSON返回JSON XML返回XML
+                success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
+                    if(data){
+                        var str=$.parseJSON(data);
+                        for (var i=0; i<str.length; i++){
+                            $("#cate").append("<li class='cate'><span onclick='classify(" + str[i].cgyid + ")'>" + str[i].cgyname + "</span></li>");
+                        }
+                    }else{
+                        layer.open({
+                            title: '警告',
+                            content: '类别获取错误！'
+                        });
+                    }
+                },
+                error:function (data) {
+                    layer.open({
+                        title: '警告',
+                        content: '类别获取错误！'
+                    });
+                }
+            });
+        }
 
     // });
 

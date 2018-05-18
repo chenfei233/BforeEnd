@@ -316,7 +316,9 @@
         $("#add_article").hide();// 隐藏写作div
         $("#show_article").hide();// 隐藏文章div
 
-        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=0';
+        var phid=getCookie("phid");
+
+        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=' + phid + '&aiestate=0';
 
         layui.use([ 'table'], function(){
             table = layui.table; //表格
@@ -365,7 +367,9 @@
         $("#add_article").hide();// 隐藏写作div
         $("#show_article").hide();// 隐藏文章div
 
-        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=-1';
+        var phid=getCookie("phid");
+
+        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=' + phid + '&aiestate=-1';
 
         layui.use([ 'table'], function(){
             table = layui.table; //表格
@@ -413,7 +417,9 @@
         $("#add_article").hide();// 隐藏写作div
         $("#show_article").hide();// 隐藏文章div
 
-        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=65&aiestate=1';
+        var phid=getCookie("phid");
+
+        var str='http://localhost:8080/Bibased/Article/findByPhidAndAiestate?phid=' + phid + '&aiestate=1';
 
         layui.use([ 'table'], function(){
             table = layui.table; //表格

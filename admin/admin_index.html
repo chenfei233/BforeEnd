@@ -622,9 +622,9 @@
      * 添加发布用户
      **/
     function addPhuser() {
-        $("#show_table").hide();//显示表格
+        $("#show_table").hide();//隐藏表格
         $("#show_article").hide();//隐藏文章
-        $("#addPhuser").show();//隐藏添加用户
+        $("#addPhuser").show();//显示添加用户
     }
 
     /**
@@ -642,7 +642,7 @@
                     phnum:rl_name,
                     phpswd:el_pwd,
                     phname:"用户u_298",
-                    phicon:"../images/user_face.png"
+                    phicon:"user_face.png"
                 },//要提交的数据是一个JSON
                 type:"POST", //提交方式
                 dataType:"TEXT", //返回数据的类型

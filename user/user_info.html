@@ -443,8 +443,13 @@
                         //TEXT字符串 JSON返回JSON XML返回XML
                         success:function(data){ //回调函数 ,成功时返回的数据存在形参data里
                             var str=$.parseJSON(data);
-                            // console.log(str)
                             //修改成功，更新cookie
+                            setCookie("oyid", str.oyid, 1);
+                            setCookie("oynum", str.oynum, 1);
+                            setCookie("oyname", str.oyname, 1);
+                            setCookie("oyicon", str.oyicon, 1);
+                            setCookie("oyemail", str.oyemail, 1);
+                            setCookie("oybrief", str.oybrief, 1);
                             //刷新页面
                             window.location.href = "user_info.html";
                         },

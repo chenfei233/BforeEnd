@@ -200,6 +200,7 @@
         left: 565px;
     }
 </style>
+
 <script type="text/javascript">
     // $(document).ready(function () {
     var num=0;
@@ -245,7 +246,10 @@
                         for (var j = 1; j < 5; j++) {
                             n=n+1;
                             var count=(((page - 1) * 12) + n )-1;
-                            if(count <aieList.length) {
+                            count=aieList.length-1-count;
+                            console.log(aieList.length)
+                            if(count > -1) {
+                            // if(count <aieList.length) {
                                 lis.push(
                                     "<li class='article' onclick='addCookie(" + aieList[count].aieid + ")'>" +
                                     "<div class='index_img'>" +
@@ -556,6 +560,15 @@
         });
     }
     // });
+    $(document).ready(function () {
+        $(".cate").on({
+            mouseover : function(){
+                $(this).css("color","#ffc81f");
+            },mouseout : function(){
+                $(this).css("color","#777777");
+            }
+        }) ;
+    });
 
 </script>
 </html>

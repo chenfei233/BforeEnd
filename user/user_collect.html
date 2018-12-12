@@ -117,6 +117,7 @@
         margin-right: 15px;
     }
 </style>
+
 <script type="text/javascript">
     // $(document).ready(function () {
     var num=0;
@@ -124,7 +125,10 @@
 
     myInterceptor();
 
-    function myInterceptor() {//没有用户cookie。跳转到登录页面
+    /**
+     * 没有用户cookie。跳转到首页
+     **/
+    function myInterceptor() {//
         var oyid=getCookie("oyid");//用户id
         if(oyid){
             return;
@@ -351,6 +355,16 @@
     }
 
     // });
+
+    $(document).ready(function () {
+        $(".cate").on({
+            mouseover : function(){
+                $(this).css("color","#ffc81f");
+            },mouseout : function(){
+                $(this).css("color","#777777");
+            }
+        }) ;
+    });
 
 </script>
 </html>

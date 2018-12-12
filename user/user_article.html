@@ -369,6 +369,7 @@
     }
 
 </style>
+
 <script type="text/javascript">
     // $(document).ready(function () {
 
@@ -791,6 +792,16 @@
         }
 
     // });
+
+    $(document).ready(function () {
+        $(".cate").on({
+            mouseover : function(){
+                $(this).css("color","#ffc81f");
+            },mouseout : function(){
+                $(this).css("color","#777777");
+            }
+        }) ;
+    });
 
 </script>
 </html>
